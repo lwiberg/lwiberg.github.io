@@ -1,0 +1,16 @@
+body {
+    background-color: #111;
+    color: #0f0;
+    font-family: monospace;
+    text-align: center;
+    padding: 4rem;
+  }
+  
+  h1 {
+    font-size: 3rem;
+  }
+  
+  p {
+    font-size: 1.5rem;
+  }
+  
