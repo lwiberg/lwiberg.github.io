@@ -1,16 +1,84 @@
 body {
-    background-color: #111;
-    color: #0f0;
-    font-family: monospace;
-    text-align: center;
-    padding: 4rem;
-  }
-  
-  h1 {
-    font-size: 3rem;
-  }
-  
-  p {
-    font-size: 1.5rem;
-  }
-  
+  background-color: #000;
+  color: #fff;
+  font-family: Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.marquee {
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 1rem 0;
+}
+
+.marquee::after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+.video-container {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+video {
+  width: 90%;
+  max-width: 800px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+}
+
+.caption {
+  margin-top: 1rem;
+}
+
+.caption h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.caption p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.grid a {
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  display: block;
+}
+
+.grid img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #444;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.grid img:hover {
+  transform: scale(1.05);
+}
