@@ -6,19 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
   
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = 100;
+        canvas.height = 150;
       }
   
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
   
-      const fontSize = 30;
-      ctx.font = "bold 30px 'Orbitron', sans-serif";
-      ctx.fillStyle = "white";
-      ctx.shadowColor = "rgb(255, 255, 255)";
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 2;
-    ctx.shadowBlur = 4;
+      
       
       document.fonts.ready.then(() => {
         draw(); // or start your animation here
@@ -28,6 +22,15 @@ document.addEventListener("DOMContentLoaded", () => {
   
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const fontSize = Math.max(20, Math.min(60, Math.floor(canvas.width * 0.05)));
+        ctx.font = `bold ${fontSize}px 'Orbitron', sans-serif`;
+        ctx.fillStyle = "white";
+        ctx.shadowColor = "rgb(255, 255, 255)";
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 4;
+
         let x = -offset;
         const amplitude = 20;
         const frequency = 0.01;
@@ -58,3 +61,26 @@ document.addEventListener("DOMContentLoaded", () => {
       createWaveBanner(canvas.id);
     });
   });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const video = document.getElementById('mainVideo');
+  const playBtn = document.getElementById('playBtn');
+
+  // Initially hide controls, show play button
+  video.controls = false;
+  playBtn.style.display = '';
+
+  playBtn.addEventListener('click', () => {
+    video.play();
+  });
+
+  video.addEventListener('play', () => {
+    playBtn.style.display = 'none';
+    video.controls = true; // Show controls when playing
+  });
+
+  video.addEventListener('pause', () => {
+    playBtn.style.display = '';
+    video.controls = false; // Hide controls when paused
+  });
+});
