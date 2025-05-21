@@ -1,23 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-    function createWaveBanner(canvasId) {
+    function createMarqueeBanner(canvasId) {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
       const text = canvas.dataset.text || ""; // get text from data-text attribute
   
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = 150;
+        canvas.height = 200;
       }
   
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
   
-      
-      
       document.fonts.ready.then(() => {
-        draw(); // or start your animation here
+        requestAnimationFrame(draw);
       });
-
+  
       let offset = 0;
   
       function draw() {
@@ -31,23 +29,42 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.shadowOffsetY = 2;
         ctx.shadowBlur = 4;
 
+        const amplitude = 18;
+        const frequency = 0.002;
+        const speed = 0.5;
+
+        const textWidth = ctx.measureText(text).width;
         let x = -offset;
-        const amplitude = 20;
-        const frequency = 0.01;
-  
-        while (x < canvas.width) {
+
+        // Draw enough text to fill the canvas plus one extra copy for seamless looping
+        while (x < canvas.width + textWidth) {
           for (let i = 0; i < text.length; i++) {
             const char = text[i];
             const charWidth = ctx.measureText(char).width;
-            const y = canvas.height / 2 + Math.sin((x + i * 10) * frequency) * amplitude;
-            ctx.fillText(char, x, y);
+
+            // Use only px for the sine phase, not offset, for seamless looping
+            const px = x;
+            const py = canvas.height / 2 + Math.sin(px * frequency) * amplitude *5;
+
+            // Tangent angle (derivative of sine)
+            const dx = 1;
+            const dy = Math.cos(px * frequency) * amplitude * frequency;
+            const angle = Math.atan2(dy, dx);
+
+            ctx.save();
+            ctx.translate(px, py);
+            ctx.rotate(angle);
+            ctx.fillText(char, 0, 0);
+            ctx.restore();
+
             x += charWidth;
           }
         }
-  
-        offset += .25;
-        if (offset > ctx.measureText(text).width) {
-          offset = 0;
+
+        // Increment offset for horizontal movement
+        offset += speed;
+        if (offset > textWidth) {
+          offset -= textWidth; // Use -= to handle any overshoot for perfect smoothness
         }
   
         requestAnimationFrame(draw);
@@ -58,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Auto-detect and initialize all canvas banners with data-text
     document.querySelectorAll("canvas[data-text]").forEach(canvas => {
-      createWaveBanner(canvas.id);
+      createMarqueeBanner(canvas.id);
     });
   });
 
@@ -83,4 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
     playBtn.style.display = '';
     video.controls = false; // Hide controls when paused
   });
+});
+
+["header", "footer"].forEach(function(section) {
+  fetch("/" + section + ".html")
+    .then(res => res.text())
+    .then(html => {
+      const el = document.getElementById(section + "-include");
+      if (el) el.innerHTML = html;
+    });
 });

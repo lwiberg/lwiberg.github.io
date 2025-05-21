@@ -39,6 +39,7 @@ video {
   gap: 3rem;
   padding: 3rem;
   margin: auto;
+  max-width: 1080px;
 }
 
 .grid a {
@@ -74,28 +75,26 @@ video {
 
 #waveBanner {
   width: 100%;
-  height: 150px;
   display: block;
   background: #19161600;
-  padding: 1rem
+  padding-bottom: 5rem;
+  padding-top: 0rem;
 }
 
 canvas[data-text] {
   width: 100%;
-  height: 150px;
   display: block;
   background: #19161600;
-  padding: 1rem;
+  padding-bottom: 5rem;
+  padding-top: 0rem;
 }
 
 .site-header {
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: #00000000; /* or whatever your background is */
-  color: white;
-  border-bottom: 1px solid #333;
+  justify-content: center; /* Center the nav horizontally */
+  background: transparent;
+  padding: 1.5rem 0 1rem 0;
 }
 
 .logo img {
@@ -125,6 +124,13 @@ canvas[data-text] {
 
 .nav-links a:hover {
   color: #ffcc00; /* hover color */
+}
+
+.nav-center {
+  display: flex;
+  justify-content: center; /* Center items inside nav */
+  align-items: center;
+  gap: 3rem;
 }
 
 /* Add to style.css */
@@ -168,4 +174,88 @@ canvas[data-text] {
 }
 .play-btn:focus {
   outline: 2px solid #ffcc00;
+}
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0 1rem 0;
+  background: transparent;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.footer-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.footer-email {
+  color: #fff;
+  font-size: .8rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.2rem 0;
+  text-align: center;
+  word-break: break-all;
+}
+
+.footer-icons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.footer-icon {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+  transition: filter 0.2s;
+}
+
+.footer-icon:hover {
+  filter: brightness(0.8) invert(0.7) sepia(1) hue-rotate(300deg) saturate(5);
+}
+
+.nav-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+}
+
+.nav-link {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #ffcc00;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo {
+  height: 32px;
+  width: auto;
+  display: block;
 }
