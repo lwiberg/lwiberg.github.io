@@ -541,3 +541,70 @@ canvas[data-text] {
   }
 }
 
+/* Add to your style.css */
+
+.djlogoloops-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+}
+
+.djlogoloops-stack {
+  position: relative;
+  width: 80vw;
+  max-width: 1200px;
+  aspect-ratio: 16 / 10;   /* Increased from 16/9 for more vertical space */
+  background-size: cover;
+  background-position: center;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 2rem 0 2.5rem 0; /* Increased bottom padding */
+  isolation: isolate;
+}
+
+.djlogoloops-stack::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  mix-blend-mode: overlay;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.djlogoloops-logo {
+  height: clamp(60px, 12vw, 140px); /* Responsive: min 60px, scales with viewport, max 140px */
+  width: auto;
+  max-width: 70%;
+  margin: 0 auto 1.5rem auto;
+  display: block;
+  z-index: 2;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.05);
+  padding-top: 24px;
+  padding-bottom: 24px;
+  box-sizing: content-box;
+}
+
+.djlogoloops-video {
+  width: 70%;                 /* Video fits well inside background */
+  max-width: 90vw;
+  height: auto;
+  border-radius: 1px;
+  border: none;                /* Remove border */
+  display: block;
+  margin: 0 auto;
+  z-index: 1;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  background: #111;
+  object-fit: contain;         /* Prevent cropping */
+}
