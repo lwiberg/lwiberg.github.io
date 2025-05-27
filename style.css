@@ -402,3 +402,142 @@ canvas[data-text] {
   }
 }
 
+/* Add to your style.css */
+
+.truecrimeytchannel-main {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.truecrimeytchannel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  justify-items: center;   /* Center images horizontally */
+  align-items: center;     /* Center images vertically */
+}
+
+.grid-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 1px;
+  border: none;
+  transition: transform 0.2s;
+  box-shadow: none;
+  max-width: none;
+  max-height: none;
+  background: #222;
+}
+
+.grid-img.large {
+  /* Slightly scale up large images for checkered effect */
+  transform: scale(1.08);
+  z-index: 1;
+}
+
+.grid-img.small {
+  transform: scale(0.92);
+  z-index: 0;
+}
+
+/* Responsive adjustments for true crime grid */
+@media (max-width: 900px) {
+  .truecrimeytchannel-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    width: 100vw;
+    height: auto;
+    justify-items: center;    /* Center images horizontally */
+  }
+  .grid-img {
+    width: 90vw;              /* Use a bit of margin on sides */
+    max-width: 600px;         /* Prevent images from being too large */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 1rem 0;
+    display: block;
+  }
+}
+
+/* Add to your style.css */
+
+.explainervideo-main {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.explainervideo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  justify-items: center;
+  align-items: center;
+}
+
+.grid-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 1px;
+  border: none;
+  transition: transform 0.2s;
+  box-shadow: none;
+  max-width: none;
+  max-height: none;
+  background: #222;
+}
+
+.grid-img.large {
+  transform: scale(1.08);
+  z-index: 1;
+}
+
+.grid-img.small {
+  transform: scale(0.92);
+  z-index: 0;
+}
+
+/* Responsive: stack to 1 column on small screens */
+@media (max-width: 900px) {
+  .explainervideo-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    width: 100vw;
+    height: auto;
+    justify-items: center;
+  }
+  .grid-img {
+    width: 90vw;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 1rem 0;
+    display: block;
+  }
+}
+
