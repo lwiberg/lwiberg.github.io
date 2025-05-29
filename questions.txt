@@ -1,0 +1,9 @@
+-best way to organize .css files and when to split/make new css files
+-using header.html and footer.html to make header and footer?
+-best way to handle desktop/mobile/split screen viewing
+-making H1, H2, H3, H4, H5, and color palette for website? (perhaps interactive?)
+-adding 3d elements later on...
+------3d car, user gets to choose/customize like mario kart
+------parallax animations on scroll
+-crowded gallery vs organized gallery
+

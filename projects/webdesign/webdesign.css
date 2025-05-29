@@ -1,0 +1,40 @@
+.webdesign-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 2rem 0;
+}
+
+.webdesign-image {
+  width: 90vw;
+  max-width: 900px;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  object-fit: contain;
+}
+
+.webdesign-video {
+  width: 90vw;
+  max-width: 900px;
+  aspect-ratio: 3 / 1;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  background: #111;
+  display: block;
+  object-fit: cover;
+  border: none; /* Remove any border */
+}
+
+@media (max-width: 600px) {
+  .webdesign-image,
+  .webdesign-video {
+    max-width: 100vw;
+    border-radius: 8px;
+    border: none; /* Ensure no border on small screens */
+  }
+}
