@@ -3,10 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
       const text = canvas.dataset.text || ""; // get text from data-text attribute
+      // Get concave value from data-concave attribute, default to 0
+      const concave = Number(canvas.dataset.concave) === 1 ? -1 : 1;
   
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = 200;
+        canvas.height = 300;
       }
   
       resizeCanvas();
@@ -30,11 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.shadowBlur = 4;
 
         const amplitude = 18;
-        const frequency = 0.002;
-        const speed = 0.5;
+        // Set frequency so one full sine wave fits the canvas width
+        const frequency = 0.5 * (2 * Math.PI) / canvas.width;
+        const speed = 0.2;
 
         const textWidth = ctx.measureText(text).width;
         let x = -offset;
+
+        // The lowest part of the sine wave (min value) is at phase π/2
+        // We want this to be at the center of the canvas
+        // So we offset the phase by π/2 at the center
+        const phaseOffset = Math.PI / 2 - frequency * (canvas.width / 2);
 
         // Draw enough text to fill the canvas plus one extra copy for seamless looping
         while (x < canvas.width + textWidth) {
@@ -42,13 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const char = text[i];
             const charWidth = ctx.measureText(char).width;
 
-            // Use only px for the sine phase, not offset, for seamless looping
             const px = x;
-            const py = canvas.height / 2 + Math.sin(px * frequency) * amplitude *5;
+            // Apply concave multiplier to amplitude
+            const py = canvas.height / 2 + Math.sin(px * frequency + phaseOffset) * amplitude * 5 * concave;
 
             // Tangent angle (derivative of sine)
             const dx = 1;
-            const dy = Math.cos(px * frequency) * amplitude * frequency;
+            const dy = Math.cos(px * frequency + phaseOffset) * amplitude * frequency * concave;
             const angle = Math.atan2(dy, dx);
 
             ctx.save();

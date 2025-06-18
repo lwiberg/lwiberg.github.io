@@ -8,7 +8,7 @@ body {
 
 .video-container {
   text-align: center;
-  padding: 2rem 0;
+  padding: 0rem 0;
 }
 
 video {
@@ -37,7 +37,7 @@ video {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 3rem;
-  padding: 3rem;
+  padding: 1.5rem;
   margin: auto;
   max-width: 1080px;
 }
@@ -73,21 +73,11 @@ video {
   transform: scale(1.05);
 }
 
-#waveBanner {
-  width: 100%;
-  height: 150px;
-  display: block;
-  background: #19161600;
-  padding-bottom: 2rem;  /* Add bottom padding */
-  padding-top: 0;        /* No top padding */
-}
-
+#waveBanner,
 canvas[data-text] {
   width: 100%;
   display: block;
-  background: #19161600;
-  padding-bottom: 5rem;
-  padding-top: 0rem;
+  background: #19161600;/* Negative margin to pull the video up, allowing overlap if needed */
 }
 
 .site-header {
