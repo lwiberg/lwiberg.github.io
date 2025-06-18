@@ -86,6 +86,8 @@ canvas[data-text] {
   justify-content: center; /* Center the nav horizontally */
   background: transparent;
   padding: 1.5rem 0 1rem 0;
+  position: relative;
+  z-index: 10;
 }
 
 .logo img {
