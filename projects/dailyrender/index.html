@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Render Project – Leila Wiberg</title>
+  <link rel="icon" type="image/png" href="../../tinac_favicon.png">
+  <link rel="stylesheet" href="../../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .dailyrender-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+      justify-items: center;
+    }
+    .dailyrender-video {
+      width: 100%;
+      max-width: 420px;         /* Increased from 220px to 320px */
+      aspect-ratio: 9 / 16;     /* Use true vertical video aspect ratio */
+      border-radius: 8px;       /* Slightly larger corners for bigger video */
+      background: #222;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      object-fit: cover;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+      display: block;
+    }
+    .dailyrender-video:hover,
+    .dailyrender-video:focus {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+    }
+    @media (max-width: 700px) {
+      .dailyrender-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dailyrender-video {
+        max-width: 88vw;        /* Larger on small screens */
+      }
+    }
+    @media (max-width: 500px) {
+      .dailyrender-grid {
+        grid-template-columns: 1fr;
+      }
+      .dailyrender-video {
+        max-width: 96vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-include"></div>
+
+  <div class="about-textblock" style="margin: 2.5rem auto 2rem auto; text-align: center; max-width: 700px;">
+    <h2>Daily Render Project</h2>
+    <h4>
+      In October 2024, I decided to make a simple looping animation every day from scratch in Blender. I was able to experiment with many new techniques and post a new video... every other day.
+      <br><br>
+      This project was a great way to improve my speed and try new things.
+      Every scene required new models, textures, animations, and video editing, but
+      I had to fit the entire process into a 24 hour period. This forced me to 
+      simplify my workflow and focus on the most important aspects of each render.
+    </h4>
+  </div>
+
+  <div class="dailyrender-grid">
+    <video class="dailyrender-video" poster="bug_thumbnail.png" src="bugfinal.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="checkerboard_thumbnail.jpg" src="checkerboard.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="circuit_thumbnail.png" src="circuit.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="concrete_thumbnail.png" src="concrete.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="dino_thumbnail.png" src="dinosmash.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="fish_thumbnail.png" src="fish.mp4" preload="none"></video>
+    <video class="dailyrender-video" poster="foggyroad_thumbnail.png" src="foggyroad .mov" preload="none"></video>
+    <video class="dailyrender-video" poster="goldship_thumbnail.png" src="goldship.mp4" preload="none"></video>
+    <video class="dailyrender-video" poster="metalbug.png" src="metalbug_thumbnail.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="numbers_thumbnail.jpg" src="numbers.mp4" preload="none"></video>
+    <video class="dailyrender-video" poster="paintsplatter_thumbnail.png" src="paintsplatter.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="shapes_thumbnail.png" src="shapes.mov" preload="none"></video>
+    <video class="dailyrender-video" poster="skin.jpeg" src="skin_thumbnail.mp4" preload="none"></video>
+  </div>
+
+  <div id="footer-include"></div>
+  <script src="../../functions.js"></script>
+  <script>
+    // Play video on hover, pause on mouse leave, show controls on hover
+    document.querySelectorAll('.dailyrender-video').forEach(video => {
+      video.addEventListener('mouseenter', () => {
+        video.controls = true;
+        video.play();
+      });
+      video.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+        video.controls = false;
+      });
+      // For accessibility: play/pause on focus/blur
+      video.addEventListener('focus', () => {
+        video.controls = true;
+        video.play();
+      });
+      video.addEventListener('blur', () => {
+        video.pause();
+        video.currentTime = 0;
+        video.controls = false;
+      });
+    });
+  </script>
+</body>
+</html>

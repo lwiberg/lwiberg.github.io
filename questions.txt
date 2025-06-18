@@ -7,3 +7,7 @@
 ------parallax animations on scroll
 -crowded gallery vs organized gallery
 
+-add dashes to names
+-combine css classes (scss, sassy css, sass)
+-about header is different fonts
+-
