@@ -285,6 +285,7 @@ canvas[data-text] {
   gap: 3rem;
   max-width: 1100px;
   margin: 4rem auto;
+  margin-bottom: 0.1rem;
   padding: 0 1rem;
   flex-wrap: wrap; /* Allow wrapping on small screens */
 }
@@ -342,6 +343,7 @@ canvas[data-text] {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding-bottom: 2rem; /* Add padding underneath the about photos */
 }
 
 .about-image-stack {
@@ -532,10 +534,11 @@ canvas[data-text] {
   width: 100%;
 }
 .about-tiny-icon {
-  width: 50px;
-  height: 50px;
+  width: min(100px, 8vw);
+  height: min(100px, 8vw);
   object-fit: contain;
   vertical-align: middle;
+  transition: width 0.2s, height 0.2s;
 }
 
 .nine-item-main {
