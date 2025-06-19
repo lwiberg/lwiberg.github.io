@@ -5,35 +5,36 @@ document.addEventListener("DOMContentLoaded", () => {
       const text = canvas.dataset.text || ""; // get text from data-text attribute
       // Get concave value from data-concave attribute, default to 0
       const concave = Number(canvas.dataset.concave) === 1 ? -1 : 1;
-  
+
+      let offset = 0;
+      let isHovered = false; // Track hover state
+
       function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = 300;
       }
-  
+
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
-  
+
       document.fonts.ready.then(() => {
         requestAnimationFrame(draw);
       });
-  
-      let offset = 0;
-  
+
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         const fontSize = Math.max(20, Math.min(60, Math.floor(canvas.width * 0.05)));
         ctx.font = `bold ${fontSize}px 'Orbitron', sans-serif`;
         ctx.fillStyle = "white";
-        ctx.shadowColor = "rgb(255, 255, 255)";
+        ctx.shadowColor = isHovered ? "#ffcc00" : "rgb(255, 255, 255)";
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
         ctx.shadowBlur = 4;
 
         const amplitude = 18;
         // Set frequency so one full sine wave fits the canvas width
-        const frequency = 0.5 * (2 * Math.PI) / canvas.width;
+        const frequency = 0.3 * (2 * Math.PI) / canvas.width;
         const speed = 0.2;
 
         const textWidth = ctx.measureText(text).width;
@@ -78,6 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(draw);
       }
   
+      // Add hover listeners to the canvas to change the shadow color
+      canvas.addEventListener("mouseenter", () => {
+        isHovered = true;
+      });
+      canvas.addEventListener("mouseleave", () => {
+        isHovered = false;
+      });
+  
       draw();
     }
   
@@ -103,11 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     playBtn.style.display = 'none';
     video.controls = true; // Show controls when playing
   });
-
-  video.addEventListener('pause', () => {
-    playBtn.style.display = '';
-    video.controls = false; // Hide controls when paused
-  });
 });
 
 ["header", "footer"].forEach(function(section) {
@@ -117,4 +121,86 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.getElementById(section + "-include");
       if (el) el.innerHTML = html;
     });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Inject fullscreen overlay HTML if not already present
+  if (!document.getElementById('fullscreenOverlay')) {
+    const overlayDiv = document.createElement('div');
+    overlayDiv.id = 'fullscreenOverlay';
+    overlayDiv.className = 'fullscreen-overlay hidden';
+    overlayDiv.innerHTML = `
+      <button id="closeFullscreen" class="fullscreen-close" aria-label="Close">&times;</button>
+      <button id="prevFullscreen" class="fullscreen-arrow left" aria-label="Previous">&#8592;</button>
+      <img id="fullscreenImg" src="" alt="Full Screen Image">
+      <button id="nextFullscreen" class="fullscreen-arrow right" aria-label="Next">&#8594;</button>
+    `;
+    document.body.appendChild(overlayDiv);
+  }
+
+  // Fullscreen overlay for five-item-collage and nine-item-grid
+  const overlay = document.getElementById('fullscreenOverlay');
+  const overlayImg = document.getElementById('fullscreenImg');
+  const closeBtn = document.getElementById('closeFullscreen');
+  const prevBtn = document.getElementById('prevFullscreen');
+  const nextBtn = document.getElementById('nextFullscreen');
+
+  // Support both five-item-collage and nine-item-grid
+  const images = Array.from(document.querySelectorAll('.five-item-collage img, .nine-item-grid img'));
+  let currentIndex = 0;
+
+  function showImage(index) {
+    currentIndex = (index + images.length) % images.length;
+    overlayImg.src = images[currentIndex].src;
+    overlay.classList.remove('hidden');
+  }
+
+  images.forEach((img, idx) => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => showImage(idx));
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      overlay.classList.add('hidden');
+      overlayImg.src = '';
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.add('hidden');
+        overlayImg.src = '';
+      }
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex + 1);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('hidden')) {
+      if (e.key === 'Escape') {
+        overlay.classList.add('hidden');
+        overlayImg.src = '';
+      } else if (e.key === 'ArrowLeft') {
+        showImage(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        showImage(currentIndex + 1);
+      }
+    }
+  });
 });
