@@ -670,7 +670,7 @@ canvas[data-text] {
   left: 50%;
   right: 50%;
   transform: translateX(-50%);
-  background: url('/images/bioluminescent-ai.gif') center center/cover no-repeat;
+  background: url('/images/bioluminescent-ai.webp') center center/cover no-repeat;
   padding: 3rem 0;
   box-sizing: border-box;
 }
