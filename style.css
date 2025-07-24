@@ -225,7 +225,7 @@ canvas[data-text] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.1rem;
+  gap: 0.5rem;
 }
 
 .footer-logo {
@@ -244,6 +244,7 @@ canvas[data-text] {
   margin: 0.2rem 0;
   text-align: center;
   word-break: break-all;
+  margin-bottom: 0.5rem;
 }
 
 .footer-email:hover {
@@ -254,8 +255,10 @@ canvas[data-text] {
 
 .footer-icons {
   display: flex;
-  gap: 2rem;
+  flex-direction: row;
+  gap: 1rem;
   justify-content: center;
+  align-items: center;
 }
 
 .footer-icon {
