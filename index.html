@@ -97,6 +97,104 @@
     
   </div>
 
+    <div id="all-projects"></div>
+
+<script>
+const projectLinks = [
+  { path: "projects/historyytchannel/index.html", title: "History YouTube Channel" },
+  { path: "projects/financialyt/index.html", title: "Financial YouTube Channel" },
+  { path: "projects/engineering-yt-channel/index.html", title: "Engineering YouTube Video" },
+  { path: "projects/truecrimeytchannel/index.html", title: "True Crime YouTube Channel" },
+  { path: "projects/visualeffects/index.html", title: "VFX for Short Film" },
+  { path: "projects/webdesign/index.html", title: "Website Design" },
+  { path: "projects/djlogos/index.html", title: "DJ Logos" },
+  { path: "projects/explainervideo/index.html", title: "3D Animated Explainer Video" },
+  { path: "projects/rapmusicvideo/index.html", title: "Rap Music Video" },
+  { path: "projects/lofivisualizers/index.html", title: "Lo-Fi Visualizers" },
+  // Add more projects as needed
+];
+
+const container = document.getElementById("all-projects");
+
+projectLinks.forEach(({ path, title }) => {
+  fetch(path)
+    .then(res => res.text())
+    .then(html => {
+      const folder = path.substring(0, path.lastIndexOf('/') + 1);
+      const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = bodyContent ? bodyContent[1] : html;
+
+      // Fix relative paths for src, href, and poster attributes
+      tempDiv.querySelectorAll('[src]').forEach(el => {
+        const src = el.getAttribute('src');
+        if (src && !src.startsWith('/') && !src.startsWith('http')) {
+          el.setAttribute('src', folder + src);
+        }
+      });
+      tempDiv.querySelectorAll('[href]').forEach(el => {
+        const href = el.getAttribute('href');
+        if (href && !href.startsWith('/') && !href.startsWith('http') && !href.startsWith('#')) {
+          el.setAttribute('href', folder + href);
+        }
+      });
+      tempDiv.querySelectorAll('[poster]').forEach(el => {
+        const poster = el.getAttribute('poster');
+        if (poster && !poster.startsWith('/') && !poster.startsWith('http')) {
+          el.setAttribute('poster', folder + poster);
+        }
+      });
+
+      // Create divider with editable title
+      const divider = document.createElement("div");
+      divider.className = "project-divider";
+      divider.innerHTML = `
+        <hr>
+        <span class="project-title" contenteditable="true">${title}</span>
+      `;
+
+      container.appendChild(divider);
+
+      const section = document.createElement("section");
+      section.innerHTML = tempDiv.innerHTML;
+      container.appendChild(section);
+    });
+});
+</script>
+
+<style>
+.project-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the title horizontally */
+  margin: 10rem 0 3rem 0;
+  position: relative;
+}
+.project-divider hr {
+  flex: 1;
+  border: none;
+  border-top: 2px solid #444;
+  margin: 0 0 0 0;
+}
+.project-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  color: #fff; /* Make the title white */
+  font-family: inherit;
+  font-weight: 600;
+  background: #181818;
+  padding: 0.2em 0.8em;
+  border-radius: 4px;
+  outline: none;
+  z-index: 1;
+}
+.project-divider {
+  position: relative;
+}
+</style>
+
 <div id="footer-include"></div>
 </body>
 </html>
