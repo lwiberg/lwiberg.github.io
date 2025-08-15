@@ -18,7 +18,58 @@
 <div class="video-container">
   <div class="custom-video-wrapper">
     <video id="mainVideo" poster="images/showreelthumbnail.webp">
-      <source src="videos/showreel2024.mp4" type="video/mp4">
+      <source src="videos/showreel2024.mp4" type="video/mp4">      // ...existing code...
+      async function loadProjectsSequentially() {
+        for (const { path, title } of projectLinks) {
+          try {
+            const res = await fetch(path);
+            const html = await res.text();
+            const folder = path.substring(0, path.lastIndexOf('/') + 1);
+            const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = bodyContent ? bodyContent[1] : html;
+      
+            // Fix relative paths for src, href, and poster attributes
+            tempDiv.querySelectorAll('[src]').forEach(el => {
+              const src = el.getAttribute('src');
+              if (src && !src.startsWith('/') && !src.startsWith('http')) {
+                el.setAttribute('src', folder + src);
+              }
+            });
+            tempDiv.querySelectorAll('[href]').forEach(el => {
+              const href = el.getAttribute('href');
+              if (href && !href.startsWith('/') && !href.startsWith('http') && !href.startsWith('#')) {
+                el.setAttribute('href', folder + href);
+              }
+            });
+            tempDiv.querySelectorAll('[poster]').forEach(el => {
+              const poster = el.getAttribute('poster');
+              if (poster && !poster.startsWith('/') && !poster.startsWith('http')) {
+                el.setAttribute('poster', folder + poster);
+              }
+            });
+      
+            // Create divider with editable title
+            const divider = document.createElement("div");
+            divider.className = "project-divider";
+            divider.innerHTML = `
+              <hr>
+              <span class="project-title" contenteditable="true">${title}</span>
+            `;
+      
+            container.appendChild(divider);
+      
+            const section = document.createElement("section");
+            section.innerHTML = tempDiv.innerHTML;
+            container.appendChild(section);
+          } catch (e) {
+            console.error(`Failed to load ${title}:`, e);
+          }
+        }
+      }
+      
+      loadProjectsSequentially();
+      // ...existing code...
     </video>
     <button class="play-btn" id="playBtn" aria-label="Play video"></button>
   </div>
