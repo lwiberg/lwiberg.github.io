@@ -13,7 +13,7 @@
 
   <div id="header-include"></div>
   
-  <canvas id="waveBanner" data-text="SHOWREEL   ◦   " data-concave="0" style="margin-top:-9rem;"></canvas>
+  <canvas id="waveBanner" data-text="SHOWREEL   ↓   " data-concave="0" style="margin-top:-9rem;"></canvas>
 
 <div class="video-container">
   <div class="custom-video-wrapper">
@@ -75,7 +75,7 @@
   </div>
 </div>
 
-  <canvas id="projectsBanner" data-text="RECENT PROJECTS   ◦   " data-concave="1" style="margin-top:2rem; margin-bottom:-10.5rem;"></canvas>
+  <canvas id="projectsBanner" data-text="RECENT PROJECTS   ↓   " data-concave="1" style="margin-top:2rem; margin-bottom:-10.5rem;"></canvas>
 
   <div class="grid">
     <a href="projects/historyytchannel/">
@@ -90,6 +90,18 @@
       <img src="images/engineeringthumbnail.webp" alt="Daily Render Project" />
       <span>Engineering Youtube Video</span>
     </a>
+    <a href="projects/shippingcompany/">
+      <img src="images/shippingthumbnail.webp" alt="Shipping Company" />
+      <span>Shipping Company 3D Rebrand</span>
+    </a>
+    <a href="projects/marinerailway/">
+      <img src="images/marinerailwaythumbnail.webp" alt="Marine Railway" />
+      <span>Marine Railway Model</span>
+    </a>
+    <a href="projects/spacerenders/">
+      <img src="images/spacethumbnail.webp" alt="Space Renders" />
+      <span>Solar System Renders</span>
+    </a>
     <a href="projects/truecrimeytchannel/">
       <img src="images/truecrimethumbnail.webp" alt="True Crime Youtube Channel" />
       <span>True Crime Youtube Channel</span>
@@ -102,28 +114,7 @@
       <img src="images/websitedesignthumbnail.webp" alt="Website Design" />
       <span>Website Design</span>
     </a>
-    <a href="projects/djlogos/">
-      <img src="images/djlogothumbnail.webp" alt="DJ Logos" />
-      <span>DJ Logos</span>
-    </a>
-    <a href="projects/explainervideo/">
-      <img src="images/airadioplayerthumbnail.webp" alt="3D Animated Explainer Video" />
-      <span>3D Animated Explainer Video</span>
-    </a>
-    <a href="projects/serverroom/">
-      <img src="images/serverroomthumbnail.webp" alt="Server Room Short Film" />
-      <span>3D Environments</span>
-    </a>
 
-    <a href="projects/rapmusicvideo/">
-      <img src="images/rapthumbnail.webp" alt="Rap Music Video" />
-      <span>Rap Music Video</span>
-    </a>
-
-    <a href="projects/lofivisualizers/">
-      <img src="images/lowfithumbnail.webp" alt="Lo-Fi Music Visualizers" />
-      <span>Lo-Fi Music Visualizers</span>
-    </a>
     <!-- 
     <a href="projects/dailyrender/">
       <img src="images/dailyrenderthumbnail.webp" alt="Daily Render Project" />
@@ -139,15 +130,41 @@
     <a href="projects/interiorrender/">
       <img src="images/interiorthumbnail.webp" alt="Interior Render" />
       <span>Interior Render</span>
-    </a> -->
+    </a> 
+        <a href="projects/serverroom/">
+      <img src="images/serverroomthumbnail.webp" alt="Server Room Short Film" />
+      <span>3D Environments</span>
     </a>
+
+    <a href="projects/rapmusicvideo/">
+      <img src="images/rapthumbnail.webp" alt="Rap Music Video" />
+      <span>Rap Music Video</span>
+    </a>
+
+    <a href="projects/lofivisualizers/">
+      <img src="images/lowfithumbnail.webp" alt="Lo-Fi Music Visualizers" />
+      <span>Lo-Fi Music Visualizers</span>
+    </a>
+    <a href="projects/djlogos/">
+      <img src="images/djlogothumbnail.webp" alt="DJ Logos" />
+      <span>DJ Logos</span>
+    </a>
+        </a>
     <a href="projects/ai">
       <img src="images/aithumbnail.webp" alt="AI Enhanced" />
       <span>AI Enhanced</span>
     </a>
+    <a href="projects/explainervideo/">
+      <img src="images/airadioplayerthumbnail.webp" alt="3D Animated Explainer Video" />
+      <span>3D Animated Explainer Video</span>
+    </a>
+    -->
+
     
   </div>
 
+    <canvas id="allProjectsBanner" data-text="ALL PROJECTS   ↓   " data-concave="0" style="margin-top:-5rem;"></canvas>
+    
     <div id="all-projects"></div>
 
 <script>
@@ -155,14 +172,14 @@ const projectLinks = [
   { path: "projects/historyytchannel/index.html", title: "History YouTube Channel" },
   { path: "projects/financialyt/index.html", title: "Financial YouTube Channel" },
   { path: "projects/engineering-yt-channel/index.html", title: "Engineering YouTube Video" },
+  { path: "projects/shippingcompany/index.html", title: "Shipping Company 3D Rebrand" },
+  { path: "projects/marinerailway/index.html", title: "Marine Railway Model and Animation" },
+  { path: "projects/spacerenders/index.html", title: "Solar System Renders" },
   { path: "projects/truecrimeytchannel/index.html", title: "True Crime YouTube Channel" },
   { path: "projects/visualeffects/index.html", title: "VFX for Short Film" },
   { path: "projects/webdesign/index.html", title: "Website Design" },
-  { path: "projects/djlogos/index.html", title: "DJ Logos" },
-  { path: "projects/explainervideo/index.html", title: "3D Animated Explainer Video" },
-  { path: "projects/rapmusicvideo/index.html", title: "Rap Music Video" },
-  { path: "projects/lofivisualizers/index.html", title: "Lo-Fi Visualizers" },
-  // Add more projects as needed
+  //{ path: "projects/explainervideo/index.html", title: "3D Animated Explainer Video" },
+  
 ];
 
 const container = document.getElementById("all-projects");
