@@ -163,28 +163,63 @@
     
   </div>
 
-    <canvas id="allProjectsBanner" data-text="ALL PROJECTS   ↓   " data-concave="0" style="margin-top:-5rem;"></canvas>
+    <canvas id="allProjectsBanner" data-text="ALL PROJECTS   ↓   " data-concave="0" style="margin-top:-10rem;margin-bottom:-10rem"></canvas>
     
     <div id="all-projects"></div>
 
 <script>
 const projectLinks = [
-  { path: "projects/historyytchannel/index.html", title: "History YouTube Channel" },
-  { path: "projects/financialyt/index.html", title: "Financial YouTube Channel" },
-  { path: "projects/engineering-yt-channel/index.html", title: "Engineering YouTube Video" },
-  { path: "projects/shippingcompany/index.html", title: "Shipping Company 3D Rebrand" },
-  { path: "projects/marinerailway/index.html", title: "Marine Railway Model and Animation" },
-  { path: "projects/spacerenders/index.html", title: "Solar System Renders" },
-  { path: "projects/truecrimeytchannel/index.html", title: "True Crime YouTube Channel" },
-  { path: "projects/visualeffects/index.html", title: "VFX for Short Film" },
-  { path: "projects/webdesign/index.html", title: "Website Design" },
-  //{ path: "projects/explainervideo/index.html", title: "3D Animated Explainer Video" },
-  
+  { 
+    path: "projects/historyytchannel/index.html", 
+    title: "History YouTube Channel",
+    description: "Responsible for everything, from creative direction to editing. 3D made in Blender and 2D made in After Effects. Some models sourced online."
+  },
+  { 
+    path: "projects/financialyt/index.html", 
+    title: "Financial YouTube Channel",
+    description: "Responsible for everything, from creative direction to editing. Made in Blender and Da Vinci Resolve. Some models sourced online."
+  },
+  { 
+    path: "projects/engineering-yt-channel/index.html", 
+    title: "Engineering YouTube Video",
+    description: "Given a storyboard and oil rig model, I created an animation in Blender to match the voiceover. "
+  },
+  { 
+    path: "projects/shippingcompany/index.html", 
+    title: "Shipping Company 3D Rebrand",
+    description: "Creative direction for a shipping technology company rebrand. 3D models provided by the client, animated and rendered in Blender."
+  },
+  { 
+    path: "projects/marinerailway/index.html", 
+    title: "Marine Railway Model and Animation",
+    description: "From reference images, I modeled a detailed marine railway in Blender, and animated to a voiceover for a Youtube video."
+  },
+  { 
+    path: "projects/spacerenders/index.html", 
+    title: "Solar System Renders",
+    description: "Used Blender to make high quality renders of the solar system for a promotional video."
+  },
+  { 
+    path: "projects/truecrimeytchannel/index.html", 
+    title: "True Crime YouTube Channel",
+    description: "Built 3D scenes and animated to a voiceover for a True Crime Youtube channel.  Made in Blender."
+  },
+  { 
+    path: "projects/visualeffects/index.html", 
+    title: "VFX for Short Film",
+    description: "My most ambitious VFX project. Creating VFX overlays with simulated 3D elements in Blender and lots of compositing in After Effects."
+  },
+  { 
+    path: "projects/webdesign/index.html", 
+    title: "Website Design",
+    description: "Bet you didn't know I can do 2D animation in a 3D program! Made in Blender with some geometry nodes tricks for infinite looping."
+  }
+  // Add more projects as needed
 ];
 
 const container = document.getElementById("all-projects");
 
-projectLinks.forEach(({ path, title }) => {
+projectLinks.forEach(({ path, title, description }) => {
   fetch(path)
     .then(res => res.text())
     .then(html => {
@@ -213,12 +248,13 @@ projectLinks.forEach(({ path, title }) => {
         }
       });
 
-      // Create divider with editable title
+      // Create divider with editable title and description
       const divider = document.createElement("div");
       divider.className = "project-divider";
       divider.innerHTML = `
         <hr>
         <span class="project-title" contenteditable="true">${title}</span>
+        <div class="project-description" contenteditable="true">${description}</div>
       `;
 
       container.appendChild(divider);
@@ -233,33 +269,44 @@ projectLinks.forEach(({ path, title }) => {
 <style>
 .project-divider {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center the title horizontally */
+  justify-content: center;
   margin: 10rem 0 3rem 0;
   position: relative;
 }
 .project-divider hr {
-  flex: 1;
+  width: 100%;
   border: none;
   border-top: 2px solid #444;
   margin: 0 0 0 0;
 }
 .project-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  font-family: 'Orbitron', Arial, sans-serif;
   font-size: 1.1rem;
-  color: #fff; /* Make the title white */
+  color: #fff;
   font-family: inherit;
   font-weight: 600;
   background: #181818;
   padding: 0.2em 0.8em;
   border-radius: 4px;
   outline: none;
+  margin-top: -1.2em;
   z-index: 1;
-}
-.project-divider {
   position: relative;
+}
+.project-description {
+  font-size: 1.1rem;
+  color: #fff;
+  font-family: inherit;
+  font-weight: 400;
+  text-align: center;
+  margin: 1em 0 0.5em 0;
+  background: #181818;
+  border-radius: 4px;
+  padding: 0.2em 0.8em;
+  outline: none;
+  max-width: 600px;
 }
 </style>
 
