@@ -20,7 +20,7 @@
     <video id="mainVideo" poster="images/showreelthumbnail.webp">
       <source src="videos/showreel2024.mp4" type="video/mp4">      // ...existing code...
       async function loadProjectsSequentially() {
-        for (const { path, title } of projectLinks) {
+        for (const { path, title, description } of projectLinks) {
           try {
             const res = await fetch(path);
             const html = await res.text();
@@ -49,12 +49,13 @@
               }
             });
       
-            // Create divider with editable title
+            // Create divider with editable title and description
             const divider = document.createElement("div");
             divider.className = "project-divider";
             divider.innerHTML = `
               <hr>
               <span class="project-title" contenteditable="true">${title}</span>
+              <div class="project-description" contenteditable="true">${description}</div>
             `;
       
             container.appendChild(divider);
@@ -68,7 +69,7 @@
         }
       }
       
-      loadProjectsSequentially();
+      document.addEventListener("DOMContentLoaded", loadProjectsSequentially);
       // ...existing code...
     </video>
     <button class="play-btn" id="playBtn" aria-label="Play video"></button>
@@ -163,7 +164,7 @@
     
   </div>
 
-    <canvas id="allProjectsBanner" data-text="ALL PROJECTS   ↓   " data-concave="0" style="margin-top:-10rem;margin-bottom:-10rem"></canvas>
+    <canvas id="allProjectsBanner" data-text="ALL PROJECTS   ↓   " data-concave="0" style="margin-top:-7rem;margin-bottom:-rem"></canvas>
     
     <div id="all-projects"></div>
 
@@ -191,7 +192,7 @@ const projectLinks = [
   },
   { 
     path: "projects/marinerailway/index.html", 
-    title: "Marine Railway Model and Animation",
+    title: "Marine Railway Model",
     description: "From reference images, I modeled a detailed marine railway in Blender, and animated to a voiceover for a Youtube video."
   },
   { 
@@ -219,10 +220,11 @@ const projectLinks = [
 
 const container = document.getElementById("all-projects");
 
-projectLinks.forEach(({ path, title, description }) => {
-  fetch(path)
-    .then(res => res.text())
-    .then(html => {
+async function loadProjectsSequentially() {
+  for (const { path, title, description } of projectLinks) {
+    try {
+      const res = await fetch(path);
+      const html = await res.text();
       const folder = path.substring(0, path.lastIndexOf('/') + 1);
       const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
       const tempDiv = document.createElement("div");
@@ -262,8 +264,13 @@ projectLinks.forEach(({ path, title, description }) => {
       const section = document.createElement("section");
       section.innerHTML = tempDiv.innerHTML;
       container.appendChild(section);
-    });
-});
+    } catch (e) {
+      console.error(`Failed to load ${title}:`, e);
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadProjectsSequentially);
 </script>
 
 <style>
@@ -272,7 +279,7 @@ projectLinks.forEach(({ path, title, description }) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10rem 0 3rem 0;
+  margin: 6rem 0 3rem 0;
   position: relative;
 }
 .project-divider hr {
@@ -283,7 +290,7 @@ projectLinks.forEach(({ path, title, description }) => {
 }
 .project-title {
   font-family: 'Orbitron', Arial, sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   color: #fff;
   font-family: inherit;
   font-weight: 600;
