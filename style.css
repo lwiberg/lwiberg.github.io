@@ -9,8 +9,8 @@ body {
 .video-container iframe {
   width: 100%;
   max-width: 800px;
-  height: 62vw;
-  max-height: 450px;
+  aspect-ratio: 16 / 9;
+  height: auto;
   margin: 0 auto;
   display: block;
   border-radius: 8px;
