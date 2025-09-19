@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = 300;
+        canvas.height = Math.min(300, Math.floor(window.innerHeight * 0.5));
       }
 
       resizeCanvas();
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        const fontSize = Math.max(20, Math.min(60, Math.floor(canvas.width * 0.05)));
+        const fontSize = Math.max(35, Math.min(60, Math.floor(canvas.width * 0.05)));
         ctx.font = `bold ${fontSize}px 'Orbitron', sans-serif`;
         ctx.fillStyle = "white";
         ctx.shadowColor = isHovered ? "#ffcc00" : "rgb(255, 255, 255)";

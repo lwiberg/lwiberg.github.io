@@ -13,68 +13,37 @@
 
   <div id="header-include"></div>
   
-  <canvas id="waveBanner" data-text="SHOWREEL   ↓   " data-concave="0" style="margin-top:-9rem;"></canvas>
+  <canvas id="waveBanner" data-text="ABOUT   ↓   " data-concave="0" style="margin-top:-9rem;"></canvas>
 
-<div class="video-container">
+    <div class="about-flex">
+    <div class="about-textblock"style="text-align:center;">
+      <span class="about-name" style="text-align:center;">Leila</span>
+      <h3><b>3D Artist | VFX Artist | VJ</b></h3>
+    
+    <span class="about-icons">
+      <img src="/projects/about/blender-icon.webp" alt="Blender" class="about-tiny-icon">
+      <img src="/projects/about/ai-icon.webp" alt="AE" class="about-tiny-icon">
+      <img src="/projects/about/unreal-icon.webp" alt="Unreal" class="about-tiny-icon">
+      <img src="/projects/about/python-icon.webp" alt="Python" class="about-tiny-icon">
+      <img src="/projects/about/touchdesigner-icon.webp" alt="TD" class="about-tiny-icon">
+      <img src="/projects/about/resolve-icon.webp" alt="davinci" class="about-tiny-icon">
+    </span>
+
+  </div>
+    <div class="about-imageblock">
+      <div class="about-image-stack"  style=" height: 300px; top:-50px;">
+      <img src="/projects/about/leila-portrait-cropped.png" alt="Leila Wiberg" style="max-width:300px; width:100%; height:auto; display:block; margin:0 auto;" class="about-main-image">      </div>
+    </div>
+  </div>
+
+<!-- <div class="video-container">
   <div class="custom-video-wrapper">
     <video id="mainVideo" poster="images/showreelthumbnail.webp">
       <source src="videos/showreel2024.mp4" type="video/mp4">      // ...existing code...
-      async function loadProjectsSequentially() {
-        for (const { path, title, description } of projectLinks) {
-          try {
-            const res = await fetch(path);
-            const html = await res.text();
-            const folder = path.substring(0, path.lastIndexOf('/') + 1);
-            const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-            const tempDiv = document.createElement("div");
-            tempDiv.innerHTML = bodyContent ? bodyContent[1] : html;
-      
-            // Fix relative paths for src, href, and poster attributes
-            tempDiv.querySelectorAll('[src]').forEach(el => {
-              const src = el.getAttribute('src');
-              if (src && !src.startsWith('/') && !src.startsWith('http')) {
-                el.setAttribute('src', folder + src);
-              }
-            });
-            tempDiv.querySelectorAll('[href]').forEach(el => {
-              const href = el.getAttribute('href');
-              if (href && !href.startsWith('/') && !href.startsWith('http') && !href.startsWith('#')) {
-                el.setAttribute('href', folder + href);
-              }
-            });
-            tempDiv.querySelectorAll('[poster]').forEach(el => {
-              const poster = el.getAttribute('poster');
-              if (poster && !poster.startsWith('/') && !poster.startsWith('http')) {
-                el.setAttribute('poster', folder + poster);
-              }
-            });
-      
-            // Create divider with editable title and description
-            const divider = document.createElement("div");
-            divider.className = "project-divider";
-            divider.innerHTML = `
-              <hr>
-              <span class="project-title" contenteditable="true">${title}</span>
-              <div class="project-description" contenteditable="true">${description}</div>
-            `;
-      
-            container.appendChild(divider);
-      
-            const section = document.createElement("section");
-            section.innerHTML = tempDiv.innerHTML;
-            container.appendChild(section);
-          } catch (e) {
-            console.error(`Failed to load ${title}:`, e);
-          }
-        }
-      }
-      
-      document.addEventListener("DOMContentLoaded", loadProjectsSequentially);
-      // ...existing code...
     </video>
     <button class="play-btn" id="playBtn" aria-label="Play video"></button>
   </div>
-</div>
+</div> -->
 
   <canvas id="projectsBanner" data-text="RECENT PROJECTS   ↓   " data-concave="1" style="margin-top:2rem; margin-bottom:-10.5rem;"></canvas>
 
