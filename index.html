@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Leila Wiberg – Portfolio</title>
+  <title>Leila – 3D Artist Portfolio</title>
   <link rel="icon" type="image/png" href="/tinac_favicon.webp">
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -13,7 +13,7 @@
 
   <div id="header-include"></div>
   
-  <canvas id="waveBanner" data-text="ABOUT   ↓   " data-concave="0" style="margin-top:-9rem; margin-bottom:-5rem"></canvas>
+  <canvas id="waveBanner" data-text="ABOUT ME   ↓   " data-concave="0" style="margin-top:-9rem; margin-bottom:-5rem"></canvas>
 
     <div class="about-flex">
     <div class="about-textblock"style="text-align:center;">
@@ -36,16 +36,7 @@
     </div>
   </div>
 
-<!-- <div class="video-container">
-  <div class="custom-video-wrapper">
-    <video id="mainVideo" poster="images/showreelthumbnail.webp">
-      <source src="videos/showreel2024.mp4" type="video/mp4">      // ...existing code...
-    </video>
-    <button class="play-btn" id="playBtn" aria-label="Play video"></button>
-  </div>
-</div> -->
-
-  <canvas id="projectsBanner" data-text="RECENT PROJECTS   ↓   " data-concave="1" style="margin-top:2rem; margin-bottom:-10.5rem;"></canvas>
+  <canvas id="projectsBanner" data-text="TABLE OF CONTENTS   ↓   " data-concave="1" style="margin-top:2rem; margin-bottom:-10.5rem;"></canvas>
 
   <div class="grid">
     <a href="projects/shippingcompany/">
@@ -84,210 +75,172 @@
       <img src="images/fanthumbnail.webp" alt="Fan 3D Model" />
       <span>Fan 3D Model</span>
     </a>
-    <!-- 
-    <a href="projects/webdesign/">
-      <img src="images/websitedesignthumbnail.webp" alt="Website Design" />
-      <span>Website Design</span>
-    </a>
-    <a href="projects/dailyrender/">
-      <img src="images/dailyrenderthumbnail.webp" alt="Daily Render Project" />
-      <span>Daily Render Project</span>
-    </a>
-    <a href="projects/proceduraltools/index.html">
-      <img src="images/generativethumbnail.webp" alt="Procedural Tools" />
-      <span>Procedural Tools</span>
-    </a>
-    <a href="projects/spaceship/index.html">
-      <img src="images/spacelandthumbnail.webp" alt="Spaceship for Short Film" />
-      <span>Spaceship for Short Film</span> 
-    <a href="projects/interiorrender/">
-      <img src="images/interiorthumbnail.webp" alt="Interior Render" />
-      <span>Interior Render</span>
-    </a> 
-        <a href="projects/serverroom/">
-      <img src="images/serverroomthumbnail.webp" alt="Server Room Short Film" />
-      <span>3D Environments</span>
-    </a>
-
-    <a href="projects/rapmusicvideo/">
-      <img src="images/rapthumbnail.webp" alt="Rap Music Video" />
-      <span>Rap Music Video</span>
-    </a>
-
-    <a href="projects/lofivisualizers/">
-      <img src="images/lowfithumbnail.webp" alt="Lo-Fi Music Visualizers" />
-      <span>Lo-Fi Music Visualizers</span>
-    </a>
-    <a href="projects/djlogos/">
-      <img src="images/djlogothumbnail.webp" alt="DJ Logos" />
-      <span>DJ Logos</span>
-    </a>
-        </a>
-    <a href="projects/ai">
-      <img src="images/aithumbnail.webp" alt="AI Enhanced" />
-      <span>AI Enhanced</span>
-    </a>
-    <a href="projects/explainervideo/">
-      <img src="images/airadioplayerthumbnail.webp" alt="3D Animated Explainer Video" />
-      <span>3D Animated Explainer Video</span>
-    </a>
-    -->
-
-    
   </div>
 
     <canvas id="allProjectsBanner" data-text="ALL PROJECTS   ↓   " data-concave="0" style="margin-top:-5rem;margin-bottom:-5rem"></canvas>
     
-    <div id="all-projects"></div>
-
-<script>
-const projectLinks = [
-  { 
-    path: "projects/historyytchannel/index.html", 
-    title: "History YouTube Channel",
-    description: "Responsible for everything, from creative direction to editing. 3D made in Blender and 2D made in After Effects. Some models sourced online."
-  },
-  { 
-    path: "projects/financialyt/index.html", 
-    title: "Financial YouTube Channel",
-    description: "Responsible for everything, from creative direction to editing. Made in Blender and Da Vinci Resolve. Some models sourced online."
-  },
-  { 
-    path: "projects/engineering-yt-channel/index.html", 
-    title: "Engineering YouTube Video",
-    description: "Given a storyboard and oil rig model, I created an animation in Blender to match the voiceover. "
-  },
-  { 
-    path: "projects/shippingcompany/index.html", 
-    title: "Shipping Company 3D Rebrand",
-    description: "Creative direction for a shipping technology company rebrand. 3D models provided by the client, animated and rendered in Blender."
-  },
-  { 
-    path: "projects/marinerailway/index.html", 
-    title: "Marine Railway Model",
-    description: "From reference images, I modeled a detailed marine railway in Blender, and animated to a voiceover for a Youtube video."
-  },
-  { 
-    path: "projects/spacerenders/index.html", 
-    title: "Solar System Renders",
-    description: "Used Blender to make high quality renders of the solar system for a promotional video."
-  },
-  { 
-    path: "projects/truecrimeytchannel/index.html", 
-    title: "True Crime YouTube Channel",
-    description: "Built 3D scenes and animated to a voiceover for a True Crime Youtube channel.  Made in Blender."
-  },
-  { 
-    path: "projects/visualeffects/index.html", 
-    title: "VFX for Short Film",
-    description: "My most ambitious VFX project. Creating VFX overlays with simulated 3D elements in Blender and lots of compositing in After Effects."
-  },
-  { 
-    path: "projects/fan/index.html", 
-    title: "Fan 3D Model",
-    description: "As a modeling exercise, I created a high poly 3D model of a fan in Blender."
-  }
-  // Add more projects as needed
-];
-
-const container = document.getElementById("all-projects");
-
-async function loadProjectsSequentially() {
-  for (const { path, title, description } of projectLinks) {
-    try {
-      const res = await fetch(path);
-      const html = await res.text();
-      const folder = path.substring(0, path.lastIndexOf('/') + 1);
-      const bodyContent = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = bodyContent ? bodyContent[1] : html;
-
-      // Fix relative paths for src, href, and poster attributes
-      tempDiv.querySelectorAll('[src]').forEach(el => {
-        const src = el.getAttribute('src');
-        if (src && !src.startsWith('/') && !src.startsWith('http')) {
-          el.setAttribute('src', folder + src);
-        }
-      });
-      tempDiv.querySelectorAll('[href]').forEach(el => {
-        const href = el.getAttribute('href');
-        if (href && !href.startsWith('/') && !href.startsWith('http') && !href.startsWith('#')) {
-          el.setAttribute('href', folder + href);
-        }
-      });
-      tempDiv.querySelectorAll('[poster]').forEach(el => {
-        const poster = el.getAttribute('poster');
-        if (poster && !poster.startsWith('/') && !poster.startsWith('http')) {
-          el.setAttribute('poster', folder + poster);
-        }
-      });
-
-      // Create divider with editable title and description
-      const divider = document.createElement("div");
-      divider.className = "project-divider";
-      divider.innerHTML = `
+    <div class="project-divider">
         <hr>
-        <span class="project-title" contenteditable="true">${title}</span>
-        <div class="project-description" contenteditable="true">${description}</div>
-      `;
+        <span class="project-title" contenteditable="true">History YouTube Channel</span>
+        <div class="project-description" contenteditable="true">
+          Responsible for everything, from creative direction to editing. 3D made in Blender and 2D made in After Effects. Some models sourced online.
+        </div>
+      </div>
+        <section>
+            <main class="nine-item-main">
+              <div class="nine-item-grid">
+                <img src="/projects/historyytchannel/shot1_preview.webp" alt="History Channel Image 1">
+                <img src="/projects/historyytchannel/shot2_preview.webp" alt="History Channel Image 2">
+                <img src="/projects/historyytchannel/shot3_preview.webp" alt="History Channel Image 3">
+                <img src="/projects/historyytchannel/shot4_preview.webp" alt="History Channel Image 4">
+                <img src="/projects/historyytchannel/shot5_preview.webp" alt="History Channel Image 5">
+                <img src="/projects/historyytchannel/shot6_preview.webp" alt="History Channel Image 6">
+                <img src="/projects/historyytchannel/shot7_preview.webp" alt="History Channel Image 7">
+                <img src="/projects/historyytchannel/shot8_preview.webp" alt="History Channel Image 8">
+                <img src="/projects/historyytchannel/shot9_preview.webp" alt="History Channel Image 9">
+              </div>
 
-      container.appendChild(divider);
+              <div class="video-container">
+                <div class="custom-video-wrapper">
+                  <video id="baalsrudVideo" poster="shot1_preview.webp" controls>
+                    <source src="/projects/historyytchannel/baalsrud_shortclip.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </main>
+        </section>
 
-      const section = document.createElement("section");
-      section.innerHTML = tempDiv.innerHTML;
-      container.appendChild(section);
-    } catch (e) {
-      console.error(`Failed to load ${title}:`, e);
-    }
-  }
-}
+    <div class="project-divider">
+      <hr>
+      <span class="project-title" contenteditable="true"> Shipping Company 3D Rebrand</span>
+      <div class="project-description" contenteditable="true">
+          Creative direction for a shipping technology company rebrand. 3D models provided by the client, animated and rendered in Blender.      </div>
+    </div>
+        <section>
+            <div class="video-row" data-items="2">
+              <video src="/projects/shippingcompany/truckanimation_revision3.mp4" class="lofi-video-full" loop autoplay muted playsinline></video>
+              <video src="/projects/shippingcompany/train_v0.mp4" class="lofi-video-full" loop autoplay muted playsinline></video>
+            </div>
 
-document.addEventListener("DOMContentLoaded", loadProjectsSequentially);
-</script>
+            <div class="video-row" data-items="2">
+              <video src="/projects/shippingcompany/camerascanning_v0.mp4" class="lofi-video-full" loop autoplay muted playsinline></video>
+              <video src="/projects/shippingcompany/wifitower_animation_v1_24fps.mp4" class="lofi-video-full"loop autoplay muted playsinline></video>
+            </div>
 
-<style>
-.project-divider {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 6rem 0 3rem 0;
-  position: relative;
-}
-.project-divider hr {
-  width: 100%;
-  border: none;
-  border-top: 2px solid #444;
-  margin: 0 0 0 0;
-}
-.project-title {
-  font-family: 'Orbitron', Arial, sans-serif;
-  font-size: 1.5rem;
-  color: #fff;
-  font-family: inherit;
-  font-weight: 600;
-  background: #181818;
-  padding: 0.2em 0.8em;
-  border-radius: 4px;
-  outline: none;
-  margin-top: -1.2em;
-  z-index: 1;
-  position: relative;
-}
-.project-description {
-  font-size: 1.1rem;
-  color: #fff;
-  font-family: inherit;
-  font-weight: 400;
-  text-align: center;
-  margin: 1em 0 0.5em 0;
-  background: #181818;
-  border-radius: 4px;
-  padding: 0.2em 0.8em;
-  outline: none;
-  max-width: 600px;
-}
-</style>
+            <div class="video-row" data-items="2">
+              <video src="/projects/shippingcompany/Truck-Crane-Animation-Simple.mp4" class="lofi-video-full"loop autoplay muted playsinline></video>
+              <video src="/projects/shippingcompany/render5_ae_30fps.mp4" class="lofi-video-full" loop autoplay muted playsinline></video>
+            </div>
+        </section>
+
+    <div class="project-divider">
+      <hr>
+      <span class="project-title" contenteditable="true">Marine Railway Model</span>
+      <div class="project-description" contenteditable="true">
+        From reference images, I modeled a detailed marine railway in Blender, and animated to a voiceover for a Youtube video.      </div>
+    </div>
+      <section>
+        <main class="nine-item-main">
+          <div class="nine-item-grid">
+            <img src="/projects/marinerailway/big-chute-model-wireframe-wip.webp" alt="">
+            <img src="/projects/marinerailway/haulingframe-inprogress-wireframe.webp" alt="">
+            <img src="/projects/marinerailway/tracks-inprogress-wireframe.webp" alt="">
+            <img src="/projects/marinerailway/big-chute-model-wip.webp" alt="">
+            <img src="/projects/marinerailway/haulingframe-inprogress-clay.webp" alt="">
+            <img src="/projects/marinerailway/tracks-inprogress-clay.webp" alt="">
+            <video src="/projects/marinerailway/bigchute_gfx_v0_with_grid.mp4" autoplay loop muted playsinline></video>
+            <video src="/projects/marinerailway/shot1.mp4" autoplay loop muted playsinline></video>
+            <video src="/projects/marinerailway/shot2.mp4" autoplay loop muted playsinline></video>
+          </div>  
+        </main>
+      </section>
+
+    <div class="project-divider">
+      <hr>
+      <span class="project-title" contenteditable="true">Solar System Renders</span>
+      <div class="project-description" contenteditable="true">
+        Used Blender to make high quality renders of the solar system for a promotional video.
+      </div>
+    </div>
+      <section>
+          <main class="nine-item-main">
+            <div class="nine-item-grid">
+              <img src="/PROJECTS/spacerenders/earth-from-the-moon-catalogue-render.webp" alt="">
+              <img src="/PROJECTS/spacerenders/mars-earth-stars-render.webp" alt="">
+              <img src="/PROJECTS/spacerenders/mars-render-cosmo-thickeratmo.webp" alt="">
+              <img src="/PROJECTS/spacerenders/solar-system-test-render.webp" alt="">
+              <img src="/PROJECTS/spacerenders/solar-system-test-render-4.webp" alt="">
+              <video src="/PROJECTS/spacerenders/leila_space_sample_1.mp4" autoplay loop muted playsinline></video>
+            </div>  
+          </main>
+      </section>
+
+    <div class="project-divider">
+      <hr>
+      <span class="project-title" contenteditable="true">True Crime YouTube Channel</span>
+      <div class="project-description" contenteditable="true">
+        Built 3D scenes and animated to a voiceover for a True Crime Youtube channel. Made in Blender.  </div>
+    </div>
+      <section>
+        <main class="nine-item-main">
+          <div class="nine-item-grid">
+            <img src="/projects/truecrimeytchannel/1_phone.webp" alt="Image 1" class="grid-img large">
+            <img src="/projects/truecrimeytchannel/2_parents.webp" alt="Image 2" class="grid-img small">
+            <img src="/projects/truecrimeytchannel/3_realization.webp" alt="Image 3" class="grid-img large">
+            <img src="/projects/truecrimeytchannel/4_cabin.webp" alt="Image 4" class="grid-img small">
+            <img src="/projects/truecrimeytchannel/5_body.webp" alt="Image 5" class="grid-img large">
+            <img src="/projects/truecrimeytchannel/6_fullbody.webp" alt="Image 6" class="grid-img small">
+          </div>
+        </main>
+      </section>
+
+    <div class="project-divider">
+      <hr>
+      <span class="project-title" contenteditable="true">VFX for Short Film</span>
+      <div class="project-description" contenteditable="true">
+        My most ambitious VFX project. Creating VFX overlays with simulated 3D elements in Blender and lots of compositing in After Effects.
+      </div>
+    </div>
+      <section>
+        <main class="nine-item-main">
+          <div class="nine-item-grid">
+            <img src="/projects/visualeffects/trippyframe.webp">
+            <img src="/projects/visualeffects/trippyframe1.webp">
+            <img src="/projects/visualeffects/trippyframe2.webp">
+            <img src="/projects/visualeffects/vfx_1.3.4.webp">
+            <video src="/projects/visualeffects/test8.mp4" autoplay loop muted playsinline></video>
+            <video src="/projects/visualeffects/bottlebreak_v1.mp4" autoplay loop muted playsinline></video>
+            <video src="/projects/visualeffects/firework_end_sequence_1080p.mp4" autoplay loop muted playsinline></video>
+            <video src="/projects/visualeffects/flyaway_mushroomcloud_v2.mp4" autoplay loop muted playsinline></video>
+            <video src="/projects/visualeffects/bloodspurtingcomp_preview4.mp4" autoplay loop muted playsinline></video>
+          </div>
+        </main>
+      </section> 
+
+    <div class="project-divider">
+      <hr>
+      <span class="project-title" contenteditable="true">Fan 3D Model</span>
+      <div class="project-description" contenteditable="true">
+       As a modeling exercise, I created a high poly 3D model of a fan in Blender.
+      </div>
+    </div>
+      <section>
+          <div class="five-item-collage">
+            <img src="/projects/fan/FAN_BOTTOM.webp" class="collage-landscape" style="grid-row: 1; grid-column: 1;">
+            <img src="/projects/fan/FAN_CLIP.webp" class="collage-landscape" style="grid-row: 1; grid-column: 2;">
+            <img src="/projects/fan/FAN_BACK.webp" class="collage-landscape" style="grid-row: 1; grid-column: 3;">
+
+            <img src="/projects/fan/fan_bottm_wireframe_subdiv_on.webp" class="collage-landscape" style="grid-row: 2; grid-column: 1;">
+            <img src="/projects/fan/fan_clip_wireframe_subdiv_on.webp" class="collage-landscape" style="grid-row: 2; grid-column: 2;">
+            <img src="/projects/fan/fan_back_wireframe_subdiv_on.webp" class="collage-landscape" style="grid-row: 2; grid-column: 3;">
+
+            <img src="/projects/fan/sideviewrender.webp" class="collage-landscape" style="grid-row: 3; grid-column: 1;">
+            <img src="/projects/fan/frontviewrender.webp" class="collage-landscape" style="grid-row: 3; grid-column: 2;">
+            <img src="/projects/fan/backviewrender.webp" class="collage-landscape" style="grid-row: 3; grid-column: 3;">
+            
+          </div>
+      </section> 
 
 <div id="footer-include"></div>
 </body>
