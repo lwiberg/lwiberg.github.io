@@ -132,7 +132,8 @@ document.addEventListener("DOMContentLoaded", function() {
     overlayDiv.innerHTML = `
       <button id="closeFullscreen" class="fullscreen-close" aria-label="Close">&times;</button>
       <button id="prevFullscreen" class="fullscreen-arrow left" aria-label="Previous">&#8592;</button>
-      <img id="fullscreenImg" src="" alt="Full Screen Image">
+      <img id="fullscreenImg" src="" alt="Full Screen Image" style="display:none;">
+      <video id="fullscreenVideo" controls style="display:none;max-width:100%;max-height:100%;background:#000;"></video>
       <button id="nextFullscreen" class="fullscreen-arrow right" aria-label="Next">&#8594;</button>
     `;
     document.body.appendChild(overlayDiv);
@@ -146,18 +147,37 @@ document.addEventListener("DOMContentLoaded", function() {
   const nextBtn = document.getElementById('nextFullscreen');
 
   // Support both five-item-collage and nine-item-grid
-  const images = Array.from(document.querySelectorAll('.five-item-collage img, .nine-item-grid img'));
+  const mediaElements = Array.from(document.querySelectorAll(
+    '.five-item-collage img, .nine-item-grid img, .five-item-collage video, .nine-item-grid video, .video-row video'
+  ));
   let currentIndex = 0;
 
-  function showImage(index) {
-    currentIndex = (index + images.length) % images.length;
-    overlayImg.src = images[currentIndex].src;
+  function showMedia(index) {
+    currentIndex = (index + mediaElements.length) % mediaElements.length;
+    const el = mediaElements[currentIndex];
+    const src = el.tagName === 'VIDEO' ? el.currentSrc || el.src : el.src;
+
+    overlayImg.style.display = 'none';
+    fullscreenVideo.style.display = 'none';
+
+    if (el.tagName === 'IMG' && src.endsWith('.webp')) {
+      overlayImg.src = src;
+      overlayImg.style.display = '';
+    } else if (el.tagName === 'VIDEO' || src.endsWith('.mp4')) {
+      fullscreenVideo.src = src;
+      fullscreenVideo.style.display = '';
+      fullscreenVideo.currentTime = 0;
+      fullscreenVideo.play();
+    } else {
+      overlayImg.src = src;
+      overlayImg.style.display = '';
+    }
     overlay.classList.remove('hidden');
   }
 
-  images.forEach((img, idx) => {
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', () => showImage(idx));
+  mediaElements.forEach((el, idx) => {
+    el.style.cursor = 'zoom-in';
+    el.addEventListener('click', () => showMedia(idx));
   });
 
   if (closeBtn) {
@@ -165,6 +185,8 @@ document.addEventListener("DOMContentLoaded", function() {
       e.stopPropagation();
       overlay.classList.add('hidden');
       overlayImg.src = '';
+      fullscreenVideo.pause();
+      fullscreenVideo.src = '';
     });
   }
 
@@ -173,6 +195,8 @@ document.addEventListener("DOMContentLoaded", function() {
       if (e.target === overlay) {
         overlay.classList.add('hidden');
         overlayImg.src = '';
+        fullscreenVideo.pause();
+        fullscreenVideo.src = '';
       }
     });
   }
@@ -180,14 +204,14 @@ document.addEventListener("DOMContentLoaded", function() {
   if (prevBtn) {
     prevBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      showImage(currentIndex - 1);
+      showMedia(currentIndex - 1);
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      showImage(currentIndex + 1);
+      showMedia(currentIndex + 1);
     });
   }
 
@@ -196,10 +220,12 @@ document.addEventListener("DOMContentLoaded", function() {
       if (e.key === 'Escape') {
         overlay.classList.add('hidden');
         overlayImg.src = '';
+        fullscreenVideo.pause();
+        fullscreenVideo.src = '';
       } else if (e.key === 'ArrowLeft') {
-        showImage(currentIndex - 1);
+        showMedia(currentIndex - 1);
       } else if (e.key === 'ArrowRight') {
-        showImage(currentIndex + 1);
+        showMedia(currentIndex + 1);
       }
     }
   });
