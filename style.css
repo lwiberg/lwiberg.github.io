@@ -620,26 +620,42 @@ canvas[data-text] {
 }
 
 .nine-item-main {
-  max-width: 68.5rem;
-  margin: 3rem auto 4rem auto;
-  padding: 0 1rem;
+  width: 100%;
+  max-width: none;        /* allow full-bleed layout */
+  margin: 0 auto 4rem auto;
+  padding: 1.5rem;        /* page padding so items don't touch edges */
+  box-sizing: border-box;
   text-align: center;
 }
 
 .nine-item-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* each column grows to fill available space, but keeps a reasonable minimum so images stay large */
+  grid-template-columns: repeat(3, minmax(20rem, 1fr));
   gap: 1.5rem;
-  justify-items: center;
-  padding: 0 2rem;   /* prevent touching viewport edges */
+  justify-items: stretch;
+  align-items: start;
+  padding: 0 0;           /* outer padding handled by .nine-item-main */
   box-sizing: border-box;
   width: 100%;
   margin: 0 auto;
+
+  /* hide any vertical scrollbar while keeping layout */
+  overflow-y: hidden;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+.nine-item-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
-.nine-item-grid img {
+/* images/videos always fill their grid cell and cannot exceed it (prevents overflow) */
+.nine-item-grid img,
+.nine-item-grid video {
+  display: block;
   width: 100%;
-  max-width: 1920px;
+  height: auto;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 1px;
@@ -648,22 +664,42 @@ canvas[data-text] {
   background: #222;
 }
 
-/* Responsive: stack to 2 columns then 1 column on small screens */
-@media (max-width: 56.25rem) {
+/* Larger image minimums on wide screens so grid looks big and fills the page */
+@media (min-width: 68.75rem) { /* ~1100px */
   .nine-item-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 37.5rem) {
-  .nine-item-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(24rem, 1fr));
+    gap: 2rem;
   }
   .nine-item-main {
-    padding: 0 0rem;
+    padding: 2.5rem;
   }
 }
 
-/* Add at the end of your CSS file */
+/* tablet -> 2 columns */
+@media (max-width: 56.25rem) { /* ~900px */
+  .nine-item-grid {
+    grid-template-columns: repeat(2, minmax(16rem, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+/* mobile -> 1 column, still constrained to viewport */
+@media (max-width: 37.5rem) { /* ~600px */
+  .nine-item-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .nine-item-main {
+    padding: 1rem;
+  }
+}
+
+/* ensure no accidental full-viewport widths cause horizontal scroll */
+html, body, .nine-item-main, .nine-item-grid {
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
 .fullscreen-overlay {
   position: fixed;
   top: 0;
