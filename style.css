@@ -620,7 +620,7 @@ canvas[data-text] {
 }
 
 .nine-item-main {
-  max-width: 2000px;
+  max-width: 68.5rem;
   margin: 3rem auto 4rem auto;
   padding: 0 1rem;
   text-align: center;
@@ -631,12 +631,15 @@ canvas[data-text] {
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   justify-items: center;
-  padding-bottom: 3rem; /* Added padding below the grid */
+  padding: 0 2rem;   /* prevent touching viewport edges */
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .nine-item-grid img {
   width: 100%;
-  max-width: 2020px;
+  max-width: 1920px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 1px;
@@ -646,17 +649,17 @@ canvas[data-text] {
 }
 
 /* Responsive: stack to 2 columns then 1 column on small screens */
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .nine-item-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .nine-item-grid {
     grid-template-columns: 1fr;
   }
   .nine-item-main {
-    padding: 0 0.5rem;
+    padding: 0 0rem;
   }
 }
 
