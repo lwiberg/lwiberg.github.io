@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – Leila</title>
+  <link rel="icon" type="image/png" href="../../tinac_favicon.webp">
+  <link rel="stylesheet" href="../../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* reduced top spacing so the card sits closer to the heading */
+    .contact-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 1rem;           /* ↓ smaller top/bottom padding */
+      min-height: calc(100vh - 18rem); /* slightly smaller min height */
+      box-sizing: border-box;
+    }
+
+    .contact-card {
+      position: relative;
+      width: min(1060px, 94vw);
+      border-radius: 18px;
+    }
+
+    /* the image used for the card */
+    .contact-card .card-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      /* remove all visual styling from the image */
+      opacity: 1;
+      pointer-events: none;
+      mix-blend-mode: plus-lighter;
+    }
+
+    /* tighten the inner spacing so headings sit closer together */
+    .contact-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      padding: 1.25rem; /* ↓ reduced inner padding */
+      text-align: center;
+      gap: 0.5rem;      /* ↓ smaller gap between text elements */
+      box-sizing: border-box;
+    }
+
+    .about-name, .contact-lead {
+      margin: 0;
+      color: #fff;
+      font-family: 'Orbitron', 'Poppins', sans-serif;
+      text-wrap: balance;
+    }
+
+    .about-name {
+      font-size: clamp(1.25rem, 3.6vw, 1.6rem); /* medium-sized intro */
+      font-weight: 500;
+      color: #dcdcdc;
+    }
+
+    .contact-lead {
+      font-size: clamp(1.6rem, 4.6vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-top: 0.25rem;
+    }
+
+    .email-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(10,10,10,0.6);
+      padding: 0.6rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-top: 0.6rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .email-link {
+      color: #ffcc00;
+      font-weight: 700;
+      font-size: clamp(1rem, 3.2vw, 1.25rem);
+      text-decoration: none;
+    }
+
+    .copy-btn {
+      background: #ffcc00;
+      color: #111;
+      border: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .hint {
+      margin-top: 0.6rem;
+      font-size: 0.9rem;
+      color: #bdbdbd;
+      min-height: 1.2em;
+    }
+
+    @media (max-width: 520px) {
+      .contact-inner { padding: 1rem; gap:0.5rem; }
+      .contact-lead { font-size: 1.25rem; }
+      .email-link { font-size: 1rem; }
+      .contact-card { border-radius: 12px; }
+    }
+  </style>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="3d59309f-911a-422c-8648-749505aab960"></script>
+</head>
+<body>
+  <div id="header-include"></div>
+
+  <main class="contact-wrap" role="main">
+    <div class="contact-card" aria-label="Contact card">
+      <!-- decorative image that forms the card background -->
+      <img class="card-image" src="/images/full_size/generativethumbnail.png" alt="" aria-hidden="true">
+
+      <!-- content centered on top of the image -->
+      <div class="contact-inner">
+        <p class="about-name">still interested?</p>
+        <h1 class="contact-lead">email me at:</h1>
+
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+          <div class="email-wrap" role="group" aria-label="Email address and copy action">
+            <a class="email-link" id="emailText" href="mailto:lwiberg29@gmail.com">lwiberg29@gmail.com</a>
+            <button class="copy-btn" id="copyEmail" aria-live="polite" aria-label="Copy email to clipboard">Copy</button>
+          </div>
+          <div class="hint" id="copyStatus" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-include"></div>
+
+  <script>
+    (function(){
+      const EMAIL = 'lwiberg29@gmail.com';
+      const copyBtn = document.getElementById('copyEmail');
+      const statusEl = document.getElementById('copyStatus');
+
+      async function copyToClipboard(text) {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          const ok = await copyToClipboard(EMAIL);
+          if (ok) {
+            statusEl.textContent = 'Copied to clipboard';
+            copyBtn.textContent = 'Copied';
+            copyBtn.disabled = true;
+            setTimeout(() => {
+              statusEl.textContent = '';
+              copyBtn.textContent = 'Copy';
+              copyBtn.disabled = false;
+            }, 1600);
+          } else {
+            statusEl.textContent = 'Unable to copy — please select and copy manually';
+            setTimeout(()=> statusEl.textContent = '', 2400);
+          }
+        });
+      }
+    })();
+  </script>
+
+  <script src="../../functions.js"></script>
+</body>
+</html>

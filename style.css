@@ -4,6 +4,7 @@ body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
+  padding-top: 64px; /* reserve space for fixed header */
 }
 
 .video-container iframe {
@@ -74,13 +75,16 @@ video {
   display: block;
 }
 
+
 .grid a span {
-  font-family: 'Poppins', sans-serif;
-  font-size: .9rem;         /* 16px */
-  font-weight: 500;        /* medium weight */
-  color: rgb(255, 255, 255);
-  text-shadow: 1px 1px 2px rgb(30, 14, 0);
-  display: block;
+    display: block;
+    text-align: center;
+    font-family: 'Orbitron', 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.8vw, 1.8rem); /* responsive, larger on big screens */
+    margin-top: 0.6rem;
+    color: #fff;
+    line-height: 1.1;
 }
 
 .grid a:hover span {
@@ -103,6 +107,21 @@ video {
   transform: scale(1.05);
 }
 
+.grid-label {
+  display: block;
+  width: 100%;
+  max-width: 1080px;
+  margin: 1.5rem auto;
+  text-align: center;
+  font-family: 'Orbitron', 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  color: #fff;
+  line-height: 1.1;
+  box-sizing: border-box;
+  padding: 0 1rem;
+}
+
 #waveBanner,
 canvas[data-text] {
   width: 100%;
@@ -112,10 +131,16 @@ canvas[data-text] {
 
 .site-header {
   width: 100%;
-  padding: 1.2rem 0 1.2rem 0;
-  position: sticky;
+  padding: 12px 0;
+  position: fixed;     /* make header stick to top */
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  height: 64px;        /* consistent header height */
+  z-index: 9999;       /* stay above other content */
+  background: #181818;
+  backdrop-filter: blur(6px);
+  box-sizing: border-box;
 }
 
 .logo img {
@@ -152,6 +177,31 @@ canvas[data-text] {
   justify-content: center;
   align-items: center;
   gap: 3rem;
+}
+
+/* base nav link styling (kept consistent) */
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 1.0rem; /* normal size for non-contact links */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+/* only the contact link — yellow and slightly larger */
+.nav-link.header-contact-btn {
+  color: #ffcc00;          /* yellow text */
+  font-size: 1.18rem;      /* slightly larger */
+  font-weight: 700;        /* bolder to stand out */
+  padding: 0.15rem 0.25rem;/* small padding to keep spacing consistent */
+}
+
+/* subtle hover state for contact link */
+.nav-link.header-contact-btn:hover {
+  opacity: 0.95;
 }
 
 .nav-link {
