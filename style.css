@@ -584,7 +584,7 @@ canvas[data-text] {
   background: #222;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 300px) {
   .five-item-collage {
     grid-template-columns: 1fr;
     grid-template-rows: none;
@@ -741,24 +741,25 @@ canvas[data-text] {
   max-width: 1500px;
   box-sizing: border-box;
   padding: 0 1rem;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 .video-row > * {
   flex: 1 1 0;
-  max-width: 520px;
+  max-width: 620px;
   width: 100%;
   height: auto;
+  padding: 0 2rem;
   box-sizing: border-box;
 }
 
-@media (max-width: 220px) {
+@media (max-width: 620px) {
   .video-row {
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    padding: 0 1vw;
+    padding: 0 1rem;
     max-width: 198vw;
   }
   .video-row > * {
