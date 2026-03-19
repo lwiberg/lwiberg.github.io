@@ -1037,3 +1037,12 @@ html, body, .nine-item-main, .nine-item-grid {
   outline: none;
   max-width: 600px;
 }
+
+.project-description a {
+  color: #ffcc00;
+  text-decoration: none;
+}
+
+.project-description a:hover {
+  text-decoration: underline;
+}
