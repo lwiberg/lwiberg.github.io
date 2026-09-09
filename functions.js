@@ -100,6 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const video = document.getElementById('mainVideo');
   const playBtn = document.getElementById('playBtn');
 
+  if (!video || !playBtn) {
+    return;
+  }
+
   // Initially hide controls, show play button
   video.controls = false;
   playBtn.style.display = '';
@@ -112,6 +116,161 @@ document.addEventListener("DOMContentLoaded", () => {
     playBtn.style.display = 'none';
     video.controls = true; // Show controls when playing
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".gallery-item").forEach((item) => {
+    const video = item.querySelector("video");
+    if (!video) {
+      return;
+    }
+
+    const startPreview = () => {
+      video.play().catch(() => {
+        // Browsers can reject playback when the interaction is not eligible.
+      });
+    };
+
+    const stopPreview = () => {
+      video.pause();
+      video.currentTime = 0;
+    };
+
+    item.addEventListener("mouseenter", startPreview);
+    item.addEventListener("mouseleave", stopPreview);
+    item.addEventListener("focus", startPreview);
+    item.addEventListener("blur", stopPreview);
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showreelVideo = document.getElementById('showreelVideo');
+  if (showreelVideo) {
+    const showControls = () => { showreelVideo.controls = true; };
+    const hideControls = () => { showreelVideo.controls = false; };
+    showreelVideo.addEventListener('mouseenter', showControls);
+    showreelVideo.addEventListener('mouseleave', hideControls);
+    showreelVideo.addEventListener('click', showControls);
+
+    const glow = document.getElementById('showreelGlow');
+    if (glow && window.CanvasRenderingContext2D) {
+      const sampleCanvas = document.createElement('canvas');
+      sampleCanvas.width = 16;
+      sampleCanvas.height = 9;
+      const ctx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+      let current = { r: 255, g: 255, b: 255 };
+      const damping = 0.05; // lower = smoother/slower color change
+      let rafId = null;
+
+      const sampleColor = () => {
+        try {
+          ctx.drawImage(showreelVideo, 0, 0, sampleCanvas.width, sampleCanvas.height);
+          const data = ctx.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data;
+          let r = 0, g = 0, b = 0;
+          const pixelCount = data.length / 4;
+          for (let i = 0; i < data.length; i += 4) {
+            r += data[i];
+            g += data[i + 1];
+            b += data[i + 2];
+          }
+          r = r / pixelCount;
+          g = g / pixelCount;
+          b = b / pixelCount;
+
+          current.r += (r - current.r) * damping;
+          current.g += (g - current.g) * damping;
+          current.b += (b - current.b) * damping;
+
+          const rr = Math.round(current.r);
+          const gg = Math.round(current.g);
+          const bb = Math.round(current.b);
+          glow.style.background = `radial-gradient(closest-side, rgba(${rr}, ${gg}, ${bb}, 0.45), rgba(${rr}, ${gg}, ${bb}, 0) 70%)`;
+        } catch (e) {
+          // ignore cross-origin/decoding errors
+        }
+        rafId = requestAnimationFrame(sampleColor);
+      };
+
+      showreelVideo.addEventListener('loadeddata', () => {
+        if (!rafId) rafId = requestAnimationFrame(sampleColor);
+      });
+      if (showreelVideo.readyState >= 2) {
+        rafId = requestAnimationFrame(sampleColor);
+      }
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const stage = document.querySelector('.cube-stage');
+  const cube = document.querySelector('.cube');
+  if (!stage || !cube) return;
+
+  let rotationY = -20; // current resting rotation, degrees
+  const rotationX = 0; // locked to the vertical axis only - never reveals top/bottom
+  const idleSpeed = -0.45; // deg per frame, idle auto-spin speed (negative = spins the other way)
+  let velocity = idleSpeed;
+  let isDragging = false;
+  let lastPointerX = 0;
+  let dragVelocity = 0;
+
+  const applyTransform = () => {
+    cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+  };
+
+  const tick = () => {
+    if (!isDragging) {
+      rotationY += velocity;
+      // ease back toward the gentle idle auto-spin speed
+      velocity += (idleSpeed - velocity) * 0.02;
+    }
+    applyTransform();
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+
+  const onPointerDown = (e) => {
+    isDragging = true;
+    cube.classList.add('is-dragging');
+    lastPointerX = e.clientX;
+    dragVelocity = 0;
+    stage.setPointerCapture && e.pointerId != null && stage.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - lastPointerX;
+    lastPointerX = e.clientX;
+    rotationY += dx * 0.4;
+    dragVelocity = dx * 0.4;
+    applyTransform();
+  };
+
+  const onPointerUp = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    cube.classList.remove('is-dragging');
+    // carry over drag momentum into the idle spin speed, then ease back to normal
+    velocity = dragVelocity;
+  };
+
+  stage.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+  window.addEventListener('pointercancel', onPointerUp);
+
+  // scrolling past the cube gives it a temporary speed boost, always spinning
+  // the same (clockwise) direction regardless of scroll direction
+  let lastScrollY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const delta = window.scrollY - lastScrollY;
+    lastScrollY = window.scrollY;
+    if (isDragging) return;
+    velocity += Math.abs(delta) * 0.015 * Math.sign(idleSpeed);
+    velocity = idleSpeed < 0
+      ? Math.max(-1.5, velocity)
+      : Math.min(1.5, velocity);
+  }, { passive: true });
 });
 
 ["header", "footer"].forEach(function(section) {
@@ -230,5 +389,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 });
-
-
