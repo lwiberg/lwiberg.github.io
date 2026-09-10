@@ -114,6 +114,33 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.image-carousel').forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll('.image-carousel-slide'));
+    const dots = Array.from(carousel.querySelectorAll('.image-carousel-dot'));
+    const counter = carousel.querySelector('.image-carousel-counter');
+    const prevBtn = carousel.querySelector('.image-carousel-arrow.left');
+    const nextBtn = carousel.querySelector('.image-carousel-arrow.right');
+    if (!slides.length) return;
+
+    let index = 0;
+
+    const show = (newIndex) => {
+      index = (newIndex + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+      dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      if (counter) counter.textContent = (index + 1) + ' / ' + slides.length;
+    };
+
+    if (prevBtn) prevBtn.addEventListener('click', () => show(index - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => show(index + 1));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+
+    show(0);
+  });
+});
+
+
 ["header", "footer"].forEach(function(section) {
   fetch("/" + section + ".html")
     .then(res => res.text())
@@ -133,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
       <button id="closeFullscreen" class="fullscreen-close" aria-label="Close">&times;</button>
       <button id="prevFullscreen" class="fullscreen-arrow left" aria-label="Previous">&#8592;</button>
       <img id="fullscreenImg" src="" alt="Full Screen Image" style="display:none;">
-      <video id="fullscreenVideo" controls style="display:none;max-width:100%;max-height:100%;background:#000;"></video>
+      <video id="fullscreenVideo" controls muted style="display:none;max-width:100%;max-height:100%;background:#000;"></video>
       <button id="nextFullscreen" class="fullscreen-arrow right" aria-label="Next">&#8594;</button>
     `;
     document.body.appendChild(overlayDiv);
@@ -167,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
       fullscreenVideo.src = src;
       fullscreenVideo.style.display = '';
       fullscreenVideo.currentTime = 0;
+      fullscreenVideo.muted = true;
       fullscreenVideo.play();
     } else {
       overlayImg.src = src;
