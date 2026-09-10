@@ -1,4 +1,47 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Animated intro loader: "Hi, I'm Leila." then cycles through role titles
+    const loader = document.getElementById('site-loader');
+    if (loader) {
+      const greeting = loader.querySelector('.site-loader-greeting');
+      const rolesWrap = loader.querySelector('.site-loader-roles');
+      const roles = Array.from(loader.querySelectorAll('.site-loader-role'));
+      document.body.classList.add('loader-active');
+
+      const showRole = (index) => {
+        roles.forEach((el, i) => {
+          el.classList.remove('is-current', 'is-prev');
+          if (i === index) el.classList.add('is-current');
+          else if (i === (index - 1 + roles.length) % roles.length) el.classList.add('is-prev');
+        });
+      };
+
+      const hideLoader = () => {
+        loader.classList.add('is-hidden');
+        document.body.classList.remove('loader-active');
+        setTimeout(() => loader.remove(), 700);
+      };
+
+      requestAnimationFrame(() => greeting.classList.add('is-visible'));
+
+      const roleIntervalMs = 850;
+      let currentIndex = 0;
+      let roleInterval;
+
+      setTimeout(() => {
+        rolesWrap.classList.add('is-visible');
+        showRole(currentIndex);
+        roleInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % roles.length;
+          showRole(currentIndex);
+        }, roleIntervalMs);
+      }, 700);
+
+      setTimeout(() => {
+        clearInterval(roleInterval);
+        hideLoader();
+      }, 700 + roles.length * roleIntervalMs + 300);
+    }
+
     function createMarqueeBanner(canvasId) {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
@@ -279,8 +322,34 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(html => {
       const el = document.getElementById(section + "-include");
       if (el) el.innerHTML = html;
+      if (section === "header") initShowreelHeaderHide();
     });
 });
+
+// Hide the fixed header while the showreel video is on screen, so it plays
+// without anything blocking it. Only active in landscape (wider than tall)
+// viewports; on portrait/mobile the header always stays visible.
+function initShowreelHeaderHide() {
+  const header = document.querySelector('.site-header');
+  const showreelSection = document.querySelector('.showreel-simple');
+  if (!header || !showreelSection) return;
+
+  const isLandscape = () => window.innerWidth > window.innerHeight;
+
+  const update = () => {
+    if (!isLandscape()) {
+      header.classList.remove('site-header--hidden');
+      return;
+    }
+    const rect = showreelSection.getBoundingClientRect();
+    const intersecting = rect.top < window.innerHeight && rect.bottom > 0;
+    header.classList.toggle('site-header--hidden', intersecting);
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   // Inject fullscreen overlay HTML if not already present
