@@ -1,196 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact – Leila</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – Leila Wiberg</title>
   <link rel="icon" type="image/png" href="../../tinac_favicon.webp">
-  <link rel="stylesheet" href="../../style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    /* reduced top spacing so the card sits closer to the heading */
-    .contact-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem 1rem;           /* ↓ smaller top/bottom padding */
-      min-height: calc(100vh - 18rem); /* slightly smaller min height */
-      box-sizing: border-box;
-    }
-
-    .contact-card {
-      position: relative;
-      width: min(1060px, 94vw);
-      border-radius: 18px;
-    }
-
-    /* the image used for the card */
-    .contact-card .card-image {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      /* remove all visual styling from the image */
-      opacity: 1;
-      pointer-events: none;
-      mix-blend-mode: plus-lighter;
-    }
-
-    /* tighten the inner spacing so headings sit closer together */
-    .contact-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      padding: 1.25rem; /* ↓ reduced inner padding */
-      text-align: center;
-      gap: 0.5rem;      /* ↓ smaller gap between text elements */
-      box-sizing: border-box;
-    }
-
-    .about-name, .contact-lead {
-      margin: 0;
-      color: #fff;
-      font-family: 'Orbitron', 'Poppins', sans-serif;
-      text-wrap: balance;
-    }
-
-    .about-name {
-      font-size: clamp(1.25rem, 3.6vw, 1.6rem); /* medium-sized intro */
-      font-weight: 500;
-      color: #dcdcdc;
-    }
-
-    .contact-lead {
-      font-size: clamp(1.6rem, 4.6vw, 2.2rem);
-      font-weight: 700;
-      color: #fff;
-      margin-top: 0.25rem;
-    }
-
-    .email-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: rgba(10,10,10,0.6);
-      padding: 0.6rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.06);
-      margin-top: 0.6rem;
-      backdrop-filter: blur(4px);
-    }
-
-    .email-link {
-      color: #ffcc00;
-      font-weight: 700;
-      font-size: clamp(1rem, 3.2vw, 1.25rem);
-      text-decoration: none;
-    }
-
-    .copy-btn {
-      background: #ffcc00;
-      color: #111;
-      border: none;
-      padding: 0.45rem 0.7rem;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.95rem;
-    }
-
-    .hint {
-      margin-top: 0.6rem;
-      font-size: 0.9rem;
-      color: #bdbdbd;
-      min-height: 1.2em;
-    }
-
-    @media (max-width: 520px) {
-      .contact-inner { padding: 1rem; gap:0.5rem; }
-      .contact-lead { font-size: 1.25rem; }
-      .email-link { font-size: 1rem; }
-      .contact-card { border-radius: 12px; }
-    }
-  </style>
+  <link rel="stylesheet" href="../../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;600;900&family=Poppins:wght@400;500&family=Rock+Salt&display=swap" rel="stylesheet">
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3d59309f-911a-422c-8648-749505aab960"></script>
 </head>
 <body>
   <div id="header-include"></div>
 
-  <main class="contact-wrap" role="main">
-    <div class="contact-card" aria-label="Contact card">
-      <!-- decorative image that forms the card background -->
-      <img class="card-image" src="/images/full_size/generativethumbnail.png" alt="" aria-hidden="true">
-
-      <!-- content centered on top of the image -->
-      <div class="contact-inner">
-        <p class="about-name">interested?</p>
-        <h1 class="contact-lead">email me at:</h1>
-
-        <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
-          <div class="email-wrap" role="group" aria-label="Email address and copy action">
-            <a class="email-link" id="emailText" href="mailto:lwiberg29@gmail.com">lwiberg29@gmail.com</a>
-            <button class="copy-btn" id="copyEmail" aria-live="polite" aria-label="Copy email to clipboard">Copy</button>
-          </div>
-          <div class="hint" id="copyStatus" aria-live="polite"></div>
-        </div>
-      </div>
+  <main class="contact-page">
+    <div class="contact-bg" aria-hidden="true">
+      <video class="contact-bg-video" autoplay muted loop playsinline preload="metadata" poster="/projects/contact/firework-bg-thumbnail.webp">
+        <source src="/projects/contact/firework-bg.mp4" type="video/mp4">
+      </video>
     </div>
+    <section class="contact-card" aria-labelledby="contact-title">
+      <p class="contact-kicker">I'd love to hear from you!</p>
+      <h1 id="contact-title" class="contact-title">dont be shy!</h1>
+      <!-- <p class="contact-intro">
+        I'm currently freelancing and taking on new projects. To inquire, send me a note and I'll get back to you within a day or two.
+      </p> -->
+
+      <div class="contact-cta">
+        <svg class="contact-arrow contact-arrow-left" viewBox="0 0 120 80" aria-hidden="true">
+          <path d="M6 10 C 30 60, 70 70, 108 48" />
+          <path d="M92 40 L 110 48 L 96 62" />
+        </svg>
+        <button type="button" class="contact-copy-btn" data-copy-email="lwiberg29@gmail.com" aria-live="polite">
+          <span class="contact-copy-label">Best way to reach me</span>
+          <span class="contact-copy-email">lwiberg29@gmail.com</span>
+          <span class="contact-copy-hint">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            Click to copy
+          </span>
+        </button>
+        <svg class="contact-arrow contact-arrow-right" viewBox="0 0 120 80" aria-hidden="true">
+          <path d="M114 10 C 90 60, 50 70, 12 48" />
+          <path d="M28 40 L 10 48 L 24 62" />
+        </svg>
+      </div>
+
+      <div class="contact-links">
+        <a class="contact-link" href="https://www.linkedin.com/in/leila-wiberg/" target="_blank" rel="noopener">
+          <img src="/images/linkedin-icon.webp" alt="" aria-hidden="true">
+          <span>LinkedIn</span>
+        </a>
+        <a class="contact-link" href="https://instagram.com/twerkingisnotacrime" target="_blank" rel="noopener">
+          <img src="/images/instagramicon.webp" alt="" aria-hidden="true">
+          <span>Instagram</span>
+        </a>
+      </div>
+    </section>
   </main>
 
   <div id="footer-include"></div>
-
-  <script>
-    (function(){
-      const EMAIL = 'lwiberg29@gmail.com';
-      const copyBtn = document.getElementById('copyEmail');
-      const statusEl = document.getElementById('copyStatus');
-
-      async function copyToClipboard(text) {
-        try {
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(text);
-          } else {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-          }
-          return true;
-        } catch (e) {
-          return false;
-        }
-      }
-
-      if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-          const ok = await copyToClipboard(EMAIL);
-          if (ok) {
-            statusEl.textContent = 'Copied to clipboard';
-            copyBtn.textContent = 'Copied';
-            copyBtn.disabled = true;
-            setTimeout(() => {
-              statusEl.textContent = '';
-              copyBtn.textContent = 'Copy';
-              copyBtn.disabled = false;
-            }, 1600);
-          } else {
-            statusEl.textContent = 'Unable to copy — please select and copy manually';
-            setTimeout(()=> statusEl.textContent = '', 2400);
-          }
-        });
-      }
-    })();
-  </script>
-
   <script src="../../functions.js"></script>
 </body>
 </html>

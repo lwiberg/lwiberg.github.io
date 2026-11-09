@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3d59309f-911a-422c-8648-749505aab960"></script>
   <script src="functions.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;900&family=Orbitron:wght@700&family=Poppins:wght@500&family=Rock+Salt&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -16,77 +16,96 @@
   <div id="site-loader" class="site-loader" aria-hidden="true">
     <div class="site-loader-inner">
       <span class="site-loader-greeting">Hi, I'm Leila.</span>
-      <span class="site-loader-roles">
-        <span class="site-loader-role">3D Artist</span>
-        <span class="site-loader-role">Engineer</span>
-        <span class="site-loader-role">VFX Artist</span>
-        <span class="site-loader-role">Motion Designer</span>
-        <span class="site-loader-role">Art Director</span>
-      </span>
+      <div class="site-loader-role-window">
+        <div class="site-loader-role-track">
+          <span>3D Artist</span>
+          <span>Engineer</span>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="header-include"></div>
 
-  <canvas id="showreelBanner" data-text="SHOWREEL   ↓   " data-concave="0" style="margin-top:-10rem; margin-bottom:-3.5rem"></canvas>
+  <!-- <canvas id="showreelBanner" data-text="SHOWREEL   ↓   " data-concave="0" style="margin-top:-10rem; margin-bottom:-3.5rem"></canvas>
 
   <section class="showreel-simple" aria-label="Showreel">
     <div class="showreel-simple-wrap">
       <div class="showreel-simple-glow" id="showreelGlow"></div>
-      <video id="showreelVideo" class="showreel-simple-video" src="/projects/showreel/Leila-Wiberg-Showreel-2026.mp4" poster="/projects/showreel/Leila-Wiberg-Showreel-2026-thumbnail.jpg" autoplay muted loop playsinline preload="auto"></video>
+      <video id="showreelVideo" class="showreel-simple-video" src="/projects/showreel/Leila-Wiberg-Showreel-2026.mp4" poster="/projects/showreel/Leila-Wiberg-Showreel-2026-thumbnail.webp" autoplay muted loop playsinline preload="auto"></video>
     </div>
-  </section>
+  </section> -->
 
-  <!--
   <canvas id="waveBanner" data-text="ABOUT ME   ↓   " data-concave="0" style="margin-top:-9rem; margin-bottom:-5rem"></canvas>
 
-    <div class="about-flex">
-    <div class="about-textblock"style="text-align:center;">
-      <span class="about-name" style="text-align:center;">Leila</span>
-      <h3><b>3D Artist | VFX Artist | VJ</b></h3>
-    
-    <span class="about-icons">
-      <img src="/projects/about/blender-icon.webp" alt="Blender" class="about-tiny-icon">
-      <img src="/projects/about/ai-icon.webp" alt="AE" class="about-tiny-icon">
-      <img src="/projects/about/unreal-icon.webp" alt="Unreal" class="about-tiny-icon">
-      <img src="/projects/about/resolve-icon.webp" alt="davinci" class="about-tiny-icon">
-    </span>
+  <div class="about-flex homepage-about">
+    <div class="about-textblock">
+      <p class="about-page-kicker homepage-about-kicker">Engineer turned visual storyteller</p>
+      <h2 class="about-page-title">Leila</h2>
+      <p class="about-page-role">3D Artist <span>/</span> VFX Artist <span>/</span> VJ</p>
 
-  </div>
+      <span class="about-icons">
+        <img src="/projects/about/blender-icon.webp" alt="Blender" class="about-tiny-icon">
+        <img src="/projects/about/ai-icon.webp" alt="AE" class="about-tiny-icon">
+        <img src="/projects/about/unreal-icon.webp" alt="Unreal" class="about-tiny-icon">
+        <img src="/projects/about/resolve-icon.webp" alt="davinci" class="about-tiny-icon">
+      </span>
+    </div>
     <div class="about-imageblock">
-      <div class="about-image-stack"  style=" height: 300px; top:-50px;">
-      <img src="/projects/about/leila-portrait-cropped.png" alt="Leila Wiberg" style="max-width:300px; width:100%; height:auto; display:block; margin:0 auto;" class="about-main-image">      </div>
+      <figure class="about-image-stack">
+        <img src="/projects/about/leila-starburst.webp" alt="Leila Wiberg" class="about-main-image">
+        <figcaption class="about-page-location">Los Angeles, CA <span>✦</span> Available worldwide</figcaption>
+      </figure>
     </div>
   </div>
-  -->
 
-  <canvas id="projectsBanner" data-text="WHAT I DO   ↓   " data-concave="1" style="margin-top:2rem; margin-bottom:-10.5rem;"></canvas>
-  <div class="about-flex">
-    <span class="about-name" style="text-align:center;">I create 3D animations that explain how technology works.</span>
-  </div>
-
-  <section class="what-i-do" aria-labelledby="what-i-do-title">
-    <div class="cube-stage" data-service-showcase aria-label="What I do">
-      <div class="cube">
-        <div class="cube-face cube-face-front">
-          <img src="/projects/fan/fan-alpha.png" alt="3D modeling">
-          <span>3D Modeling</span>
-        </div>
-        <div class="cube-face cube-face-right">
-          <img src="/projects/roroship/1228.webp" alt="3D animation">
-          <span>3D Animation</span>
-        </div>
-        <div class="cube-face cube-face-back">
-          <img src="/projects/visualeffects/bloodspurting-alpha.png" alt="VFX">
-          <span>VFX</span>
-        </div>
-        <div class="cube-face cube-face-left">
-          <img src="/projects/nokia/pvds-thumbnail-new.png" alt="2D animation">
-          <span>2D Animation</span>
-        </div>
-        <div class="cube-face cube-face-top"></div>
-        <div class="cube-face cube-face-bottom"></div>
+  <header class="section-marker" aria-label="What I do">
+    <!-- <p class="section-marker-kicker">Skills</p> -->
+    <div class="section-marker-row">
+      <div class="section-marker-arrows" aria-hidden="true">
+        <span>↓</span><span>↓</span><span>↓</span>
       </div>
+      <h2 class="section-marker-title">What I Do</h2>
+      <div class="section-marker-arrows" aria-hidden="true">
+        <span>↓</span><span>↓</span><span>↓</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="what-i-do" data-skill-showcase aria-label="Creative skills">
+    <div class="skill-showcase-backgrounds" aria-hidden="true">
+      <div class="skill-showcase-background skill-showcase-modeling-sequence is-active" data-skill-image="3d-modeling">
+        <img class="skill-showcase-modeling-frame is-visible" src="/projects/fan/fan-main.webp" alt="">
+        <img class="skill-showcase-modeling-frame" src="/projects/fan/fan-wireframe-main.webp" alt="">
+        <img class="skill-showcase-modeling-frame" src="/projects/fan/fan-wireframe-green-main.webp" alt="">
+      </div>
+      <video class="skill-showcase-background" data-skill-image="3d-animation" poster="/projects/roroship/roro-ship-alpha-thumbnail.webp" muted loop playsinline preload="metadata">
+        <source src="/projects/roroship/roro-ship-alpha.webm" type="video/webm">
+        <source src="/projects/roroship/roro-ship-alpha.mp4" type="video/mp4">
+      </video>
+      <video class="skill-showcase-background" data-skill-image="2d-animation" poster="/projects/airrights/air-rights-3-thumbnail.webp" muted loop playsinline preload="metadata">
+        <source src="/projects/airrights/air-rights-3.mp4" type="video/mp4">
+      </video>
+      <img class="skill-showcase-background" data-skill-image="vfx" src="/projects/visualeffects/bloodspurting-alpha.webp" alt="">
+    </div>
+    <div class="skill-showcase-shade" aria-hidden="true"></div>
+    <div class="skill-showcase-list">
+      <button class="skill-showcase-option is-active" type="button" data-skill="3d-modeling" aria-pressed="true">
+        <span class="skill-showcase-title">3D Modeling</span>
+        <span class="skill-showcase-subtitle">Product Visualization / Custom Models</span>
+      </button>
+      <button class="skill-showcase-option" type="button" data-skill="3d-animation" aria-pressed="false">
+        <span class="skill-showcase-title">3D Animation</span>
+        <span class="skill-showcase-subtitle">Technical Explainers / Product Launch Videos</span>
+      </button>
+      <button class="skill-showcase-option" type="button" data-skill="2d-animation" aria-pressed="false">
+        <span class="skill-showcase-title">2D Animation</span>
+        <span class="skill-showcase-subtitle">Motion Graphics / Animated Diagrams</span>
+      </button>
+      <button class="skill-showcase-option" type="button" data-skill="vfx" aria-pressed="false">
+        <span class="skill-showcase-title">VFX</span>
+        <span class="skill-showcase-subtitle">Compositing / Simulations</span>
+      </button>
     </div>
   </section>
 
@@ -94,62 +113,34 @@
 
   <section class="project-gallery" aria-label="Project examples">
     <a class="gallery-item" href="projects/nokia/" aria-label="The Anatomy of">
-      <img src="/projects/nokia/gan-intro-thumbnail.jpg" alt="The Anatomy of">
-      <video src="/projects/nokia/gan-intro.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <img src="/projects/nokia/intros/intro-thumbnail-colorful.webp" alt="The Anatomy of">
+      <video src="/projects/nokia/intros/intro.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
       <span>The Anatomy of</span>
     </a>
     <a class="gallery-item" href="projects/chinesecars/" aria-label="YouTube storytelling">
-      <img src="/projects/chinesecars/tv-drawing-thumbnail.webp" alt="YouTube storytelling">
-      <video src="/projects/chinesecars/tv-drawing.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>Youtube Storytelling</span>
+      <img src="/projects/chinesecars/animations/iphone-city-thumbnail.webp" alt="YouTube storytelling">
+      <video src="/projects/chinesecars/animations/tv-drawing.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <span>Chinese Cars Documentary</span>
     </a>
-    <a class="gallery-item" href="projects/shippingcompany/" aria-label="Shipping company rebrand">
-      <img src="/projects/shippingcompany/reach-stacker-thumnail.webp" alt="Conference animations">
-      <video src="/projects/shippingcompany/train_v0.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>Conference Animations</span>
+    <a class="gallery-item" href="projects/sagrada/" aria-label="Sagrada Familia">
+      <img src="/projects/sagrada/thumbnail/00_redbg.webp" alt="Sagrada Familia">
+      <video src="/projects/sagrada/building.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <span>Sagrada Familia</span>
+    </a>
+    <a class="gallery-item" href="projects/realbigmachines/" aria-label="Real Big Machines">
+      <img src="/projects/roroship/inside-reveal-thumbnail_1.1.2.webp" alt="Real Big Machines">
+      <video src="/projects/roroship/ramp-down-roro.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <span>Real Big Machines</span>
     </a>
     <a class="gallery-item" href="projects/windturbine/" aria-label="Windmill Graphics">
       <img src="/projects/windturbine/Wind-Turbine-GFX-4k-FINAL-diagram.webp" alt="Windmill graphics">
       <video src="/projects/windturbine/Wind-Turbine-GFX-4k-FINAL-video.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
       <span>Windmill Graphics</span>
     </a>
-    <a class="gallery-item" href="projects/spacerenders/" aria-label="Space Renders">
-      <img src="/projects/spacerenders/space-thumbnail-1_1.1.1.webp" alt="Space renders">
-      <video src="/projects/spacerenders/leila_space_sample_1.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>Space Renders</span>
-    </a>
-    <a class="gallery-item" href="projects/sagrada/" aria-label="Sagrada Familia">
-      <img src="/projects/sagrada/building-thumbnail.jpg" alt="Sagrada Familia">
-      <video src="/projects/sagrada/building.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>Sagrada Familia</span>
-    </a>
-    <a class="gallery-item" href="projects/marinerailway/" aria-label="Marine Railway">
-      <img src="/projects/marinerailway/railway-thumbnail-1_1.1.1.webp" alt="Marine railway">
-      <video src="/projects/marinerailway/shot2.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>Marine Railway</span>
-    </a>
-    <a class="gallery-item" href="projects/roroship/" aria-label="RORO Ship">
-      <img src="/projects/roroship/inside-reveal-thumbnail_1.1.2.webp" alt="RORO ship interior reveal">
-      <video src="/projects/roroship/ramp-down-roro.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>RORO Ship</span>
-    </a>
     <a class="gallery-item" href="projects/chinesecars/" aria-label="Coal">
       <img src="/projects/chinesecars/coal-thumbnail.webp" alt="Coal animation">
       <video src="/projects/chinesecars/coal.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
       <span>Coal</span>
-    </a>
-    <a class="gallery-item" href="projects/financialyt/" aria-label="Financial Engineering">
-      <img src="/projects/financialyt/financial12_1.27.1.webp" alt="Financial engineering">
-      <video src="/projects/financialyt/compressed_madoff_clip.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-      <span>Financial Engineering</span>
-    </a>
-    <a class="gallery-item" href="projects/interiorrender/" aria-label="Interior Render">
-      <img src="/projects/interiorrender/ROOM_RENDER.webp" alt="Interior render">
-      <span>Interior Render</span>
-    </a>
-    <a class="gallery-item" href="projects/engineering-yt-channel/" aria-label="Oil Rig">
-      <img src="/projects/engineering-yt-channel/underwater_cross_section_1.2.2.webp" alt="Oil rig underwater cross section">
-      <span>Oil Rig</span>
     </a>
   </section>
 

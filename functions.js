@@ -1,45 +1,33 @@
+(() => {
+  if (sessionStorage.getItem('homepage-loader-shown') === 'true') {
+    document.documentElement.classList.add('site-loader-seen');
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Animated intro loader: "Hi, I'm Leila." then cycles through role titles
     const loader = document.getElementById('site-loader');
     if (loader) {
-      const greeting = loader.querySelector('.site-loader-greeting');
-      const rolesWrap = loader.querySelector('.site-loader-roles');
-      const roles = Array.from(loader.querySelectorAll('.site-loader-role'));
-      document.body.classList.add('loader-active');
+      if (document.documentElement.classList.contains('site-loader-seen')) {
+        loader.remove();
+      } else {
+        sessionStorage.setItem('homepage-loader-shown', 'true');
+        document.body.classList.add('loader-active');
 
-      const showRole = (index) => {
-        roles.forEach((el, i) => {
-          el.classList.remove('is-current', 'is-prev');
-          if (i === index) el.classList.add('is-current');
-          else if (i === (index - 1 + roles.length) % roles.length) el.classList.add('is-prev');
+        const removeLoader = () => {
+          document.body.classList.remove('loader-active');
+          loader.remove();
+        };
+
+        loader.addEventListener('animationend', (event) => {
+          if (event.target === loader && event.animationName === 'site-loader-exit') {
+            removeLoader();
+          }
         });
-      };
 
-      const hideLoader = () => {
-        loader.classList.add('is-hidden');
-        document.body.classList.remove('loader-active');
-        setTimeout(() => loader.remove(), 700);
-      };
-
-      requestAnimationFrame(() => greeting.classList.add('is-visible'));
-
-      const roleIntervalMs = 850;
-      let currentIndex = 0;
-      let roleInterval;
-
-      setTimeout(() => {
-        rolesWrap.classList.add('is-visible');
-        showRole(currentIndex);
-        roleInterval = setInterval(() => {
-          currentIndex = (currentIndex + 1) % roles.length;
-          showRole(currentIndex);
-        }, roleIntervalMs);
-      }, 700);
-
-      setTimeout(() => {
-        clearInterval(roleInterval);
-        hideLoader();
-      }, 700 + roles.length * roleIntervalMs + 300);
+        setTimeout(() => {
+          if (loader.isConnected) removeLoader();
+        }, 4500);
+      }
     }
 
     function createMarqueeBanner(canvasId) {
@@ -50,7 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const concave = Number(canvas.dataset.concave) === 1 ? -1 : 1;
 
       let offset = 0;
+      let previousFrameTime = null;
+      let measuredFont = "";
+      let characters = [];
+      let textWidth = 0;
       let isHovered = false; // Track hover state
+      const narrowLayout = window.matchMedia("(max-width: 600px)");
+      const rootStyles = getComputedStyle(document.documentElement);
+      const secondaryAccent = rootStyles.getPropertyValue("--accent-secondary").trim() || "#f1ece2";
+      const inkColor = rootStyles.getPropertyValue("--ink").trim() || "#f1ece2";
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -64,23 +60,32 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(draw);
       });
 
-      function draw() {
+      function draw(frameTime) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        const fontSize = Math.max(35, Math.min(60, Math.floor(canvas.width * 0.05)));
-        ctx.font = `bold ${fontSize}px 'Orbitron', sans-serif`;
-        ctx.fillStyle = "white";
-        ctx.shadowColor = isHovered ? "#ffcc00" : "rgb(255, 255, 255)";
+        const fontSize = Math.max(52, Math.min(96, Math.floor(canvas.width * 0.08)));
+        const font = `900 ${fontSize}px 'Barlow Condensed', 'Arial Narrow', sans-serif`;
+        ctx.font = font;
+        ctx.fillStyle = inkColor;
+        ctx.shadowColor = secondaryAccent;
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
-        ctx.shadowBlur = 4;
+        ctx.shadowBlur = isHovered || narrowLayout.matches ? 8 : 4;
 
         const amplitude = 18;
         // Set frequency so one full sine wave fits the canvas width
         const frequency = 0.3 * (2 * Math.PI) / canvas.width;
-        const speed = 0.2;
+        const pixelsPerSecond = 21;
 
-        const textWidth = ctx.measureText(text).width;
+        if (measuredFont !== font) {
+          characters = Array.from(text, (char) => ({
+            char,
+            width: ctx.measureText(char).width
+          }));
+          textWidth = characters.reduce((width, character) => width + character.width, 0);
+          measuredFont = font;
+          offset = textWidth > 0 ? offset % textWidth : 0;
+        }
         let x = -offset;
 
         // The lowest part of the sine wave (min value) is at phase π/2
@@ -90,13 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Draw enough text to fill the canvas plus one extra copy for seamless looping
         while (x < canvas.width + textWidth) {
-          for (let i = 0; i < text.length; i++) {
-            const char = text[i];
-            const charWidth = ctx.measureText(char).width;
-
+          characters.forEach(({ char, width: charWidth }) => {
             const px = x;
             // Apply concave multiplier to amplitude
-            const py = canvas.height / 2 + Math.sin(px * frequency + phaseOffset) * amplitude * 5 * concave;
+            const py = canvas.height / 2 + 25 + Math.sin(px * frequency + phaseOffset) * amplitude * 5 * concave;
 
             // Tangent angle (derivative of sine)
             const dx = 1;
@@ -110,14 +112,14 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.restore();
 
             x += charWidth;
-          }
+          });
         }
 
-        // Increment offset for horizontal movement
-        offset += speed;
-        if (offset > textWidth) {
-          offset -= textWidth; // Use -= to handle any overshoot for perfect smoothness
+        if (previousFrameTime !== null && textWidth > 0) {
+          const elapsed = Math.min(frameTime - previousFrameTime, 50);
+          offset = (offset + pixelsPerSecond * elapsed / 1000) % textWidth;
         }
+        previousFrameTime = frameTime;
   
         requestAnimationFrame(draw);
       }
@@ -129,8 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
       canvas.addEventListener("mouseleave", () => {
         isHovered = false;
       });
-  
-      draw();
     }
   
     // Auto-detect and initialize all canvas banners with data-text
@@ -140,24 +140,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const video = document.getElementById('mainVideo');
-  const playBtn = document.getElementById('playBtn');
+  document.querySelectorAll('.custom-video-wrapper').forEach((wrapper) => {
+    const video = wrapper.querySelector('video');
+    const playBtn = wrapper.querySelector('.play-btn');
 
-  if (!video || !playBtn) {
-    return;
-  }
+    if (!video || !playBtn) {
+      return;
+    }
 
-  // Initially hide controls, show play button
-  video.controls = false;
-  playBtn.style.display = '';
+    // Initially hide controls, show play button
+    video.controls = false;
+    playBtn.style.display = '';
 
-  playBtn.addEventListener('click', () => {
-    video.play();
-  });
+    playBtn.addEventListener('click', () => {
+      video.play();
+    });
 
-  video.addEventListener('play', () => {
-    playBtn.style.display = 'none';
-    video.controls = true; // Show controls when playing
+    video.addEventListener('play', () => {
+      playBtn.style.display = 'none';
+      video.controls = true; // Show controls when playing
+    });
   });
 });
 
@@ -245,79 +247,376 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const stage = document.querySelector('.cube-stage');
-  const cube = document.querySelector('.cube');
-  if (!stage || !cube) return;
+  document.querySelectorAll('.chinesecars-storyboards').forEach((section) => {
+    const carousel = section.querySelector('.chinesecars-carousel');
+    const previousButton = section.querySelector('.chinesecars-carousel-button.is-previous');
+    const nextButton = section.querySelector('.chinesecars-carousel-button.is-next');
+    const firstPair = carousel?.querySelector('.chinesecars-storyboard-pair');
 
-  let rotationY = -20; // current resting rotation, degrees
-  const rotationX = 0; // locked to the vertical axis only - never reveals top/bottom
-  const idleSpeed = -0.45; // deg per frame, idle auto-spin speed (negative = spins the other way)
-  let velocity = idleSpeed;
-  let isDragging = false;
-  let lastPointerX = 0;
-  let dragVelocity = 0;
+    if (!carousel || !previousButton || !nextButton || !firstPair) return;
 
-  const applyTransform = () => {
-    cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+    let autoAdvanceTimer;
+    let hasInteracted = false;
+
+    const getScrollStep = () => {
+      const track = carousel.querySelector('.chinesecars-carousel-track');
+      const gap = track ? parseFloat(getComputedStyle(track).columnGap) || 0 : 0;
+      return firstPair.getBoundingClientRect().width + gap;
+    };
+
+    const updateButtons = () => {
+      const maximumScroll = carousel.scrollWidth - carousel.clientWidth;
+      previousButton.disabled = carousel.scrollLeft <= 1;
+      nextButton.disabled = carousel.scrollLeft >= maximumScroll - 1;
+    };
+
+    const pauseAutoAdvance = () => {
+      if (!autoAdvanceTimer) return;
+      clearInterval(autoAdvanceTimer);
+      autoAdvanceTimer = undefined;
+    };
+
+    const stopAutoAdvance = () => {
+      hasInteracted = true;
+      pauseAutoAdvance();
+    };
+
+    const move = (direction) => {
+      carousel.scrollBy({ left: direction * getScrollStep(), behavior: 'smooth' });
+    };
+
+    previousButton.addEventListener('click', () => {
+      stopAutoAdvance();
+      move(-1);
+    });
+
+    nextButton.addEventListener('click', () => {
+      stopAutoAdvance();
+      move(1);
+    });
+
+    ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach((eventName) => {
+      carousel.addEventListener(eventName, stopAutoAdvance, { passive: true });
+    });
+
+    carousel.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    // Pages can slow the auto-advance (e.g. when slides carry their own animation).
+    const autoAdvanceInterval = Number(section.dataset.carouselInterval) || 1500;
+
+    const startAutoAdvance = () => {
+      if (hasInteracted || autoAdvanceTimer || carousel.scrollWidth <= carousel.clientWidth) return;
+      autoAdvanceTimer = setInterval(() => {
+        const maximumScroll = carousel.scrollWidth - carousel.clientWidth;
+        if (carousel.scrollLeft >= maximumScroll - 1) {
+          carousel.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          move(1);
+        }
+      }, autoAdvanceInterval);
+    };
+
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        startAutoAdvance();
+      } else {
+        pauseAutoAdvance();
+      }
+    }, { threshold: 0.2 });
+
+    visibilityObserver.observe(section);
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const carousel = document.querySelector('.chinesecars-character-carousel');
+  if (!carousel) return;
+
+  const stage = carousel.querySelector('.chinesecars-character-stage');
+  const slides = Array.from(carousel.querySelectorAll('.chinesecars-character-slide'));
+  const caption = carousel.querySelector('.chinesecars-character-caption');
+  const previousButton = carousel.querySelector('.chinesecars-character-arrow.is-previous');
+  const nextButton = carousel.querySelector('.chinesecars-character-arrow.is-next');
+
+  if (!stage || !caption || !previousButton || !nextButton || slides.length < 2) return;
+
+  let currentIndex = 0;
+  let isTransitioning = false;
+
+  const showSlide = (nextIndex, direction = 1) => {
+    if (isTransitioning || nextIndex === currentIndex) return;
+
+    isTransitioning = true;
+    const currentSlide = slides[currentIndex];
+    const nextSlide = slides[nextIndex];
+    nextSlide.classList.add('is-entering');
+    nextSlide.classList.toggle('is-reverse', direction < 0);
+    caption.textContent = nextSlide.dataset.caption;
+
+    void nextSlide.offsetWidth;
+    nextSlide.classList.add('is-wiping');
+
+    const finishTransition = () => {
+      currentSlide.classList.remove('is-active');
+      nextSlide.classList.remove('is-entering', 'is-reverse', 'is-wiping');
+      nextSlide.classList.add('is-active');
+      currentIndex = nextIndex;
+      isTransitioning = false;
+    };
+
+    nextSlide.addEventListener('transitionend', finishTransition, { once: true });
+    setTimeout(() => {
+      if (isTransitioning && nextSlide.classList.contains('is-entering')) finishTransition();
+    }, 900);
   };
 
-  const tick = () => {
-    if (!isDragging) {
-      rotationY += velocity;
-      // ease back toward the gentle idle auto-spin speed
-      velocity += (idleSpeed - velocity) * 0.02;
+  const move = (direction) => {
+    const nextIndex = (currentIndex + direction + slides.length) % slides.length;
+    showSlide(nextIndex, direction);
+  };
+
+  previousButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    move(-1);
+  });
+
+  nextButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    move(1);
+  });
+
+  stage.addEventListener('click', () => move(1));
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.chinesecars-animation-grid video, .nokia-process-section video, .nokia-cool-clips video, .sagrada-project .nokia-details-media video').forEach((video) => {
+    const startPreview = () => {
+      video.controls = true;
+      video.play().catch(() => {
+        // Browsers can reject playback before the media is ready.
+      });
+    };
+
+    const stopPreview = () => {
+      if (!video.autoplay) video.pause();
+      video.controls = false;
+    };
+
+    video.controls = false;
+    video.addEventListener('mouseenter', startPreview);
+    video.addEventListener('mouseleave', stopPreview);
+    video.addEventListener('focus', startPreview);
+    video.addEventListener('blur', stopPreview);
+  });
+});
+
+// Pages like the Nokia project contain dozens of looping autoplay videos.
+// Letting all of them decode at once exhausts the browser's hardware video
+// decoders and can crash the GPU compositor (black screen / flicker), so only
+// play the ones that are near the viewport and pause the rest.
+document.addEventListener("DOMContentLoaded", () => {
+  if (!('IntersectionObserver' in window)) return;
+
+  const videos = Array.from(document.querySelectorAll('video[autoplay][loop]'))
+    .filter((video) => !video.closest('.gallery-item'));
+  if (videos.length === 0) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ target: video, isIntersecting }) => {
+      if (isIntersecting) {
+        if (video.paused) {
+          video.play().catch(() => {
+            // Autoplay may be rejected; nothing to do.
+          });
+        }
+      } else if (!video.paused) {
+        video.pause();
+      }
+    });
+  }, { rootMargin: '200px 0px' });
+
+  videos.forEach((video) => observer.observe(video));
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.sagrada-lod-comparison').forEach((comparison) => {
+    const range = comparison.querySelector('.sagrada-lod-range');
+    if (!range) return;
+
+    const updateComparison = () => {
+      comparison.style.setProperty('--position', `${range.value}%`);
+      const comparisonLabel = range.dataset.comparisonLabel || 'optimized';
+      range.setAttribute('aria-valuetext', `${range.value}% ${comparisonLabel}`);
+    };
+
+    range.addEventListener('input', updateComparison);
+    range.addEventListener('keydown', (event) => {
+      const value = Number(range.value);
+      let nextValue;
+
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
+        nextValue = value - 1;
+      } else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+        nextValue = value + 1;
+      } else if (event.key === 'Home') {
+        nextValue = 0;
+      } else if (event.key === 'End') {
+        nextValue = 100;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      range.value = String(Math.max(0, Math.min(100, nextValue)));
+      updateComparison();
+    });
+    updateComparison();
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showcase = document.querySelector('[data-skill-showcase]');
+  if (!showcase) return;
+
+  const options = [...showcase.querySelectorAll('[data-skill]')];
+  const backgrounds = [...showcase.querySelectorAll('[data-skill-image]')];
+  const modelingFrames = [...showcase.querySelectorAll('.skill-showcase-modeling-frame')];
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let modelingFrameIndex = 0;
+  let modelingTransitionTimer;
+  let modelingCleanupTimer;
+  let modelingLayer = 1;
+
+  const resetModelingSequence = () => {
+    modelingFrameIndex = 0;
+    modelingLayer = 1;
+    modelingFrames.forEach((frame, index) => {
+      frame.classList.toggle('is-visible', index === 0);
+      frame.style.zIndex = index === 0 ? '1' : '0';
+    });
+  };
+
+  const stopModelingSequence = () => {
+    clearInterval(modelingTransitionTimer);
+    clearTimeout(modelingCleanupTimer);
+    modelingTransitionTimer = undefined;
+    modelingCleanupTimer = undefined;
+  };
+
+  const startModelingSequence = () => {
+    stopModelingSequence();
+    resetModelingSequence();
+    if (prefersReducedMotion || modelingFrames.length < 2) return;
+
+    modelingTransitionTimer = setInterval(() => {
+      const previousFrame = modelingFrames[modelingFrameIndex];
+      modelingFrameIndex = (modelingFrameIndex + 1) % modelingFrames.length;
+      const nextFrame = modelingFrames[modelingFrameIndex];
+
+      modelingLayer += 1;
+      nextFrame.style.zIndex = String(modelingLayer);
+      nextFrame.classList.remove('is-visible');
+      requestAnimationFrame(() => {
+        nextFrame.classList.add('is-visible');
+      });
+
+      modelingCleanupTimer = setTimeout(() => {
+        previousFrame.classList.remove('is-visible');
+        previousFrame.style.zIndex = '0';
+      }, 450);
+    }, 500);
+  };
+
+  const activateSkill = (skill) => {
+    options.forEach((option) => {
+      const isActive = option.dataset.skill === skill;
+      option.classList.toggle('is-active', isActive);
+      option.setAttribute('aria-pressed', String(isActive));
+    });
+
+    backgrounds.forEach((background) => {
+      const isActive = background.dataset.skillImage === skill;
+      background.classList.toggle('is-active', isActive);
+
+      if (background instanceof HTMLVideoElement) {
+        if (isActive) {
+          background.play().catch((error) => {
+            console.warn('Unable to play skill background video.', error);
+          });
+        } else {
+          background.pause();
+        }
+      }
+    });
+
+    if (skill === '3d-modeling') {
+      startModelingSequence();
+    } else {
+      stopModelingSequence();
     }
-    applyTransform();
-    requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-
-  const onPointerDown = (e) => {
-    isDragging = true;
-    cube.classList.add('is-dragging');
-    lastPointerX = e.clientX;
-    dragVelocity = 0;
-    stage.setPointerCapture && e.pointerId != null && stage.setPointerCapture(e.pointerId);
   };
 
-  const onPointerMove = (e) => {
-    if (!isDragging) return;
-    const dx = e.clientX - lastPointerX;
-    lastPointerX = e.clientX;
-    rotationY += dx * 0.4;
-    dragVelocity = dx * 0.4;
-    applyTransform();
+  options.forEach((option) => {
+    const activate = () => activateSkill(option.dataset.skill);
+    option.addEventListener('pointerenter', activate);
+    option.addEventListener('focus', activate);
+    option.addEventListener('click', activate);
+  });
+
+  startModelingSequence();
+});
+
+// About page FAQ: fill in today's date wherever [data-today] appears.
+document.querySelectorAll('[data-today]').forEach((el) => {
+  const now = new Date();
+  el.textContent = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  el.setAttribute('datetime', now.toISOString().slice(0, 10));
+});
+
+// Contact page: copy the email address to the clipboard and flash a confirmation.
+document.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-copy-email]');
+  if (!btn) return;
+  const email = btn.dataset.copyEmail;
+  const label = btn.querySelector('.contact-copy-label');
+  const original = label ? label.textContent : '';
+
+  const done = (ok) => {
+    btn.classList.toggle('is-copied', ok);
+    if (label) label.textContent = ok ? 'Copied!' : 'Press Ctrl+C to copy';
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => {
+      btn.classList.remove('is-copied');
+      if (label) label.textContent = original;
+    }, 2000);
   };
 
-  const onPointerUp = () => {
-    if (!isDragging) return;
-    isDragging = false;
-    cube.classList.remove('is-dragging');
-    // carry over drag momentum into the idle spin speed, then ease back to normal
-    velocity = dragVelocity;
+  const legacyCopy = () => {
+    // Fallback: select the text and use execCommand so older/non-secure contexts still work.
+    const range = document.createRange();
+    range.selectNodeContents(btn.querySelector('.contact-copy-email') || btn);
+    const sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(range);
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    sel.removeAllRanges();
+    return ok;
   };
 
-  stage.addEventListener('pointerdown', onPointerDown);
-  window.addEventListener('pointermove', onPointerMove);
-  window.addEventListener('pointerup', onPointerUp);
-  window.addEventListener('pointercancel', onPointerUp);
-
-  // scrolling past the cube gives it a temporary speed boost, always spinning
-  // the same (clockwise) direction regardless of scroll direction
-  let lastScrollY = window.scrollY;
-  window.addEventListener('scroll', () => {
-    const delta = window.scrollY - lastScrollY;
-    lastScrollY = window.scrollY;
-    if (isDragging) return;
-    velocity += Math.abs(delta) * 0.015 * Math.sign(idleSpeed);
-    velocity = idleSpeed < 0
-      ? Math.max(-1.5, velocity)
-      : Math.min(1.5, velocity);
-  }, { passive: true });
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(email).then(() => done(true), () => done(legacyCopy()));
+  } else {
+    done(legacyCopy());
+  }
 });
 
 ["header", "footer"].forEach(function(section) {
-  fetch("/" + section + ".html")
+  fetch("/" + section + ".html", { cache: "no-store" })
     .then(res => res.text())
     .then(html => {
       const el = document.getElementById(section + "-include");

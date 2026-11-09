@@ -2,55 +2,268 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Real Engineering – Leila Wiberg</title>
-  <link rel="icon" type="image/png" href="../../tinac_favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sagrada Familia – Leila Wiberg</title>
+  <link rel="icon" type="image/webp" href="../../tinac_favicon.webp">
   <link rel="stylesheet" href="../../style.css" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3d59309f-911a-422c-8648-749505aab960"></script>
 </head>
 <body>
   <div id="header-include"></div>
 
-    <div class="project-divider">
-      <hr>
-      <span class="project-title" contenteditable="true"> Real Engineering | Sagrada Familia</span>
-      <div class="project-description">
-         Youtube video about the 150 year journey to build the tallest church in the world. <a href="https://www.youtube.com/watch?v=UiPJbxryrkU">Link.</a>
-      </div>
-    </div>
-  </div>
+  <main class="chinesecars-project sagrada-project">
+    <section class="chinesecars-hero" aria-label="Sagrada Familia project breakdown">
+      <video autoplay muted loop controls playsinline preload="metadata" poster="thumbnail/06_red_unfinished.webp">
+        <source src="diorama-shots-breakdown.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
 
-    <main class="nine-item-main">
-  <div class="nine-item-grid">
-    <img src="barcelona-smoke-still.jpg" alt="Barcelona Smoke Still">
-    </video>
-        <video src="building.mp4"
-          poster="building-thumbnail.jpg"
-          preload="none"
-          autoplay
-          loop
-          muted
-          playsinline>
-    </video>
-    <img src="map-still.jpg" alt="Map Still">
-    <img src="compression-still.jpg" alt="Compression Still">
-    <img src="compression-arch-still.jpg" alt="Compression Arch Still">
-    <img src="arches-still.jpg" alt="Arches Still">
-    <img src="floorplan-still.jpg" alt="Floorplan Still">
-    <img src="3-bags-still.jpg" alt="3 Bags Still">
-    <img src="bags-still.jpg" alt="Bags Still">
-    <img src="projector-still.jpg" alt="Projector Still">
-    <video src="stone-flying.mp4"
-           poster="stone-flying-thumbnail.jpg"
-           preload="none"
-           autoplay
-           loop
-           muted
-           playsinline>
-    </video>
-    <img src="posters-still.jpg" alt="PostersStill">
-  </div>
-</main>
+    <section class="chinesecars-overview" aria-labelledby="project-title">
+      <div>
+        <p class="chinesecars-eyebrow">Project</p>
+        <h1 id="project-title">Sagrada Familia</h1>
+      </div>
+      <div class="chinesecars-project-details">
+        <div>
+          <h2>Purpose</h2>
+          <p>Tell the 150-year story behind the construction of the tallest church in the world.</p>
+        </div>
+        <div>
+          <h2>My Role</h2>
+          <p>3D Artist</p>
+        </div>
+        <div>
+          <h2>Scope</h2>
+          <p>5 minutes of animation, 8+ environments, under 1 month</p>
+        </div>
+        <div>
+          <h2>Result</h2>
+          <p>24 minute documentary with 450k views on <a href="https://www.youtube.com/watch?v=UiPJbxryrkU">YouTube</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="nokia-process-section" aria-labelledby="levels-detail-title">
+      <div class="nokia-process-copy">
+        <p class="chinesecars-eyebrow">Technique</p>
+        <h2 id="levels-detail-title">Levels of Detail</h2>
+        <p>I imported map data of Barcelona with different levels of detail based on the distance from the camera.</p>
+      </div>
+      <div class="sagrada-lod-comparison" style="--position: 50%;">
+        <img src="levelofdetail/lod-3-original.webp" alt="Original high-detail Sagrada Familia model">
+        <div class="sagrada-lod-updated">
+          <img src="levelofdetail/lod-3.webp" alt="Optimized Sagrada Familia level-of-detail model">
+        </div>
+        <input class="sagrada-lod-range" type="range" min="0" max="100" value="50" aria-label="Compare optimized and original Sagrada Familia models">
+        <div class="sagrada-lod-divider" aria-hidden="true">
+          <span>↔</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chinesecars-storyboards sagrada-style-update" aria-labelledby="style-update-title">
+      <div class="chinesecars-storyboards-heading">
+        <div>
+          <p class="chinesecars-eyebrow">Process</p>
+          <h2 id="style-update-title">Updating the Animation Style</h2>
+          <p class="chinesecars-animations-description">I remade these 10 year old animations in a modern 3D style. Same concept, higher production value.</p>
+        </div>
+        <div class="chinesecars-carousel-controls">
+          <button class="chinesecars-carousel-button is-previous" type="button" aria-label="Previous animation style comparison">←</button>
+          <button class="chinesecars-carousel-button is-next" type="button" aria-label="Next animation style comparison">→</button>
+        </div>
+      </div>
+
+      <div class="chinesecars-carousel" tabindex="0" aria-label="Previous and updated animation style comparison carousel">
+        <div class="chinesecars-carousel-track">
+          <figure class="chinesecars-storyboard-pair">
+            <div class="chinesecars-storyboard-frame">
+              <img src="roman-2-old.webp" alt="Previous version of the second Roman architecture animation">
+            </div>
+            <div class="chinesecars-final-frame">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Updated second Roman architecture animation" poster="roman-2-thumbnail.webp">
+                <source src="roman-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </figure>
+
+          <figure class="chinesecars-storyboard-pair">
+            <div class="chinesecars-storyboard-frame">
+              <img src="roman-5-old.webp" alt="Previous version of the fifth Roman architecture animation">
+            </div>
+            <div class="chinesecars-final-frame">
+              <img src="roman-5.webp" alt="Updated fifth Roman architecture animation">
+            </div>
+          </figure>
+
+          <figure class="chinesecars-storyboard-pair">
+            <div class="chinesecars-storyboard-frame">
+              <img src="roman-3-old.webp" alt="Previous version of the third Roman architecture animation">
+            </div>
+            <div class="chinesecars-final-frame">
+              <img src="roman-3.webp" alt="Updated third Roman architecture animation">
+            </div>
+          </figure>
+
+          <figure class="chinesecars-storyboard-pair">
+            <div class="chinesecars-storyboard-frame">
+              <img src="roman-6-old.webp" alt="Previous version of the sixth Roman architecture animation">
+            </div>
+            <div class="chinesecars-final-frame">
+              <img src="roman-6.webp" alt="Updated sixth Roman architecture animation">
+            </div>
+          </figure>
+
+          <figure class="chinesecars-storyboard-pair">
+            <div class="chinesecars-storyboard-frame">
+              <img src="roman-5-old.webp" alt="Previous version used for the first Roman architecture animation">
+            </div>
+            <div class="chinesecars-final-frame">
+              <video autoplay muted loop playsinline preload="metadata" poster="roman-1-thumbnail.webp" aria-label="Updated first Roman architecture animation">
+                <source src="roman-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="nokia-details" aria-labelledby="details-title">
+
+      <div class="nokia-details-list">
+        <article class="nokia-details-slide">
+          <div class="nokia-details-copy">
+            <p>01</p>
+            <h3>Barcelona in 1936</h3>
+          </div>
+          <div class="nokia-details-media">
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" poster="city-1.webp" aria-label="First historical Barcelona environment">
+                <source src="city-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" poster="city-2.webp" aria-label="Second historical Barcelona environment">
+                <source src="city-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" poster="city-3.webp" aria-label="Third historical Barcelona environment">
+                <source src="city-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Fourth historical Barcelona environment" poster="city-4-thumbnail.webp">
+                <source src="city-4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Fifth historical Barcelona environment" poster="city-5-thumbnail.webp">
+                <source src="city-5.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" poster="city-6-thumbnail.webp" aria-label="Sixth historical Barcelona environment">
+                <source src="city-6.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+          </div>
+        </article>
+
+        <article class="nokia-details-slide">
+          <div class="nokia-details-copy">
+            <p>02</p>
+            <h3>Bag Simulations</h3>
+          </div>
+          <div class="nokia-details-media">
+            <figure class="has-sagrada-annotation">
+              <video autoplay muted loop playsinline preload="metadata" poster="bags-1-thumbnail.webp" aria-label="First construction material animation">
+                <source src="bags-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <img class="sagrada-accurate-physics-overlay" src="overlays/accuratephysics-overlay.webp" alt="" aria-hidden="true">
+            </figure>
+            <figure class="has-sagrada-annotation">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Second construction material animation" poster="bags-2-thumbnail.webp">
+                <source src="bags-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <img class="sagrada-so-cool-overlay" src="overlays/socool-overlay.webp" alt="" aria-hidden="true">
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" poster="bags-3-thumbnail.webp" aria-label="Third construction material animation">
+                <source src="bags-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+          </div>
+        </article>
+
+        <article class="nokia-details-slide">
+          <div class="nokia-details-copy">
+            <p>03</p>
+            <h3>Projector Scene</h3>
+          </div>
+          <div class="nokia-details-media">
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Second projection sequence" poster="projector-2-thumbnail.webp">
+                <source src="projector-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" poster="projector-still.webp" aria-label="Historical projector presentation">
+                <source src="projector.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+            <figure>
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Third projection sequence" poster="projector-3-thumbnail.webp">
+                <source src="projector-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </figure>
+          </div>
+        </article>
+
+        <article class="nokia-details-slide">
+          <div class="nokia-details-copy">
+            <p>04</p>
+            <h3>Thumbnail Studies</h3>
+          </div>
+          <div class="nokia-details-media">
+            <figure class="has-winner-overlay">
+              <img src="thumbnail/00_redbg.webp" alt="Winning red environment thumbnail study">
+              <img class="sagrada-winner-overlay" src="overlays/winner-overlay.webp" alt="" aria-hidden="true">
+            </figure>
+            <figure><img src="thumbnail/06_red_unfinished.webp" alt="Dark red lighting study"></figure>
+            <figure><img src="thumbnail/05_blue_finished.webp" alt="Finished blue lighting study"></figure>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="chinesecars-next-project" aria-labelledby="next-project-title">
+      <p class="chinesecars-eyebrow">Continue Exploring</p>
+      <h2 id="next-project-title">Next Project</h2>
+      <a class="chinesecars-next-project-link" href="../realbigmachines/">
+        <img src="../marinerailway/railway-thumbnail-3_1.3.1.webp" alt="Real Big Machines project">
+        <span>
+          <strong>Real Big Machines</strong>
+          <span>View project →</span>
+        </span>
+      </a>
+    </section>
+  </main>
 
   <div id="footer-include"></div>
   <script src="../../functions.js"></script>
