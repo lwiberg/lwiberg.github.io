@@ -394,12 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // On touch devices the native controls are hidden by CSS until the video is tapped.
-  document.querySelectorAll('video[controls]').forEach((video) => {
-    video.addEventListener('click', () => video.classList.add('show-controls'), { once: true });
-  });
-
-  document.querySelectorAll('.chinesecars-animation-grid video,  .nokia-process-section video, .nokia-cool-clips video, .sagrada-project .nokia-details-media video').forEach((video) => {
+  document.querySelectorAll('.chinesecars-animation-grid video, .nokia-process-section video, .nokia-cool-clips video, .sagrada-project .nokia-details-media video').forEach((video) => {
     const startPreview = () => {
       video.controls = true;
       video.play().catch(() => {
