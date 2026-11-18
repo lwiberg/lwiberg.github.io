@@ -30,6 +30,156 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function setupStretchLine(line, resizeTarget, maxScale = Infinity) {
+      const text = line.firstElementChild;
+      const signature = text.querySelector('.homepage-hero-signature');
+      const characters = Array.from(signature
+        ? text.textContent.slice(signature.textContent.length)
+        : text.textContent);
+      text.textContent = '';
+      if (signature) text.appendChild(signature);
+      text.classList.add('homepage-hero-letters');
+      text.setAttribute('aria-hidden', 'true');
+
+      const letters = characters.map(character => {
+        const letter = document.createElement('span');
+        const glyph = document.createElement('span');
+        letter.className = 'homepage-hero-letter';
+        glyph.textContent = character;
+        letter.appendChild(glyph);
+        text.appendChild(letter);
+        return letter;
+      });
+
+      let activeLetter = null;
+      let widths = [];
+
+      const reset = () => {
+        activeLetter = null;
+        letters.forEach(letter => letter.style.removeProperty('--letter-scale'));
+      };
+
+      const measure = () => {
+        widths = letters.map(letter => parseFloat(getComputedStyle(letter.firstElementChild).width));
+        text.style.setProperty('--line-width', `${widths.reduce((sum, width) => sum + width, 0)}px`);
+        letters.forEach((letter, index) => {
+          letter.style.setProperty('--letter-width', `${widths[index]}px`);
+        });
+        reset();
+      };
+
+      line.addEventListener('pointermove', event => {
+        if (event.pointerType === 'touch' || reducedMotion.matches ||
+            line.classList.contains('is-entrance-wave') ||
+            line.classList.contains('is-entrance-flourish')) return;
+        const letter = event.target.closest('.homepage-hero-letter');
+        if (!letter || !text.contains(letter) || !letter.textContent.trim()) {
+          if (activeLetter) reset();
+          return;
+        }
+        if (letter === activeLetter) return;
+
+        const index = letters.indexOf(letter);
+        const total = widths.reduce((sum, width) => sum + width, 0);
+        const selectedWidth = widths[index];
+        const remaining = total - selectedWidth;
+        if (!selectedWidth || !remaining) return;
+
+        const selectedScale = Math.min(total * 0.45 / selectedWidth, maxScale);
+        const otherScale = (total - selectedWidth * selectedScale) / remaining;
+        activeLetter = letter;
+        letters.forEach(item => {
+          item.style.setProperty('--letter-scale', item === letter ? selectedScale : otherScale);
+        });
+      });
+      line.addEventListener('pointerleave', () => {
+        if (!line.classList.contains('is-entrance-wave')) reset();
+      });
+      reducedMotion.addEventListener('change', reset);
+      new ResizeObserver(measure).observe(resizeTarget);
+      measure();
+      document.fonts.ready.then(measure);
+      return reset;
+    }
+
+    const heroName = document.querySelector('.homepage-hero-name');
+    if (heroName) {
+      const lines = Array.from(heroName.children);
+      heroName.setAttribute('aria-label', lines.map(line => line.textContent.trim()).join(' '));
+      lines.forEach(line => setupStretchLine(line, heroName));
+    }
+
+    document.querySelectorAll('.section-marker-title').forEach(sectionTitle => {
+      sectionTitle.setAttribute('aria-label', sectionTitle.textContent.trim());
+      const resetStretch = setupStretchLine(sectionTitle, sectionTitle, 2.5);
+
+      if ('IntersectionObserver' in window) {
+        const letters = Array.from(sectionTitle.querySelectorAll('.homepage-hero-letter'));
+        const flourishLetter = letters.find(letter => letter.textContent.trim());
+        if (flourishLetter) flourishLetter.classList.add('is-flourish-letter');
+        let visibleCount = 0;
+        const positions = letters.map(letter => letter.textContent.trim() ? visibleCount++ : null);
+        let frame;
+        const startWave = () => {
+          let start;
+          resetStretch();
+          sectionTitle.classList.add('is-entrance-wave');
+          const animate = time => {
+            if (start === undefined) start = time;
+            const progress = Math.min((time - start) / 700, 1);
+            if (progress === 1) {
+              frame = undefined;
+              resetStretch();
+              sectionTitle.classList.remove('is-entrance-wave');
+              if (flourishLetter) {
+                const firstWidth = parseFloat(flourishLetter.style.getPropertyValue('--letter-width'));
+                const total = letters.reduce((sum, letter) =>
+                  sum + parseFloat(letter.style.getPropertyValue('--letter-width')), 0);
+                const remaining = total - firstWidth;
+                sectionTitle.style.setProperty('--flourish-others-wide', (total - firstWidth * 0.55) / remaining);
+                sectionTitle.style.setProperty('--flourish-others-narrow', (total - firstWidth * 1.3) / remaining);
+                sectionTitle.classList.add('is-entrance-flourish');
+              }
+              return;
+            }
+
+            const center = visibleCount - progress * (visibleCount + 1);
+            const strength = Math.min(progress / 0.08, (1 - progress) / 0.08, 1);
+            const widths = letters.map(letter => parseFloat(letter.style.getPropertyValue('--letter-width')));
+            const scales = positions.map(position =>
+              1 - 0.45 * strength + (position === null ? 0 :
+                2 * strength * Math.exp(-0.5 * ((position - center) / 0.85) ** 2)));
+            const total = widths.reduce((sum, width) => sum + width, 0);
+            const stretched = widths.reduce((sum, width, index) => sum + width * scales[index], 0);
+            letters.forEach((letter, index) => {
+              letter.style.setProperty('--letter-scale', scales[index] * total / stretched);
+            });
+            frame = requestAnimationFrame(animate);
+          };
+          frame = requestAnimationFrame(animate);
+        };
+        const observer = new IntersectionObserver(([entry]) => {
+          if (!entry.isIntersecting) return;
+          if (!reducedMotion.matches) startWave();
+          observer.disconnect();
+        }, { threshold: 0.1 });
+        observer.observe(sectionTitle);
+        sectionTitle.addEventListener('animationend', event => {
+          if (event.target === flourishLetter && event.animationName === 'section-marker-flourish-width') {
+            sectionTitle.classList.remove('is-entrance-flourish');
+          }
+        });
+        reducedMotion.addEventListener('change', () => {
+          if (!reducedMotion.matches) return;
+          if (frame !== undefined) cancelAnimationFrame(frame);
+          frame = undefined;
+          resetStretch();
+          sectionTitle.classList.remove('is-entrance-wave', 'is-entrance-flourish');
+        });
+      }
+    });
+
     function createMarqueeBanner(canvasId) {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
@@ -45,7 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let isHovered = false; // Track hover state
       const narrowLayout = window.matchMedia("(max-width: 600px)");
       const rootStyles = getComputedStyle(document.documentElement);
-      const secondaryAccent = rootStyles.getPropertyValue("--accent-secondary").trim() || "#f1ece2";
       const inkColor = rootStyles.getPropertyValue("--ink").trim() || "#f1ece2";
 
       function resizeCanvas() {
@@ -67,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const font = `900 ${fontSize}px 'Barlow Condensed', 'Arial Narrow', sans-serif`;
         ctx.font = font;
         ctx.fillStyle = inkColor;
-        ctx.shadowColor = secondaryAccent;
+        ctx.shadowColor = "#181818";
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
         ctx.shadowBlur = isHovered || narrowLayout.matches ? 8 : 4;
@@ -626,7 +775,16 @@ document.addEventListener('click', (event) => {
     .then(html => {
       const el = document.getElementById(section + "-include");
       if (el) el.innerHTML = html;
-      if (section === "header") initShowreelHeaderHide();
+      if (section === "header" && el) {
+        const normalizePath = path => path.replace(/\/index\.html$/i, '').replace(/\/+$/, '') || '/';
+        const currentPath = normalizePath(window.location.pathname);
+        el.querySelectorAll('.nav-center > .nav-link').forEach(link => {
+          if (normalizePath(link.pathname) === currentPath) {
+            link.setAttribute('aria-current', 'page');
+          }
+        });
+        initShowreelHeaderHide();
+      }
     });
 });
 
