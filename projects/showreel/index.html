@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Showreel – Leila Wiberg</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Showreels – Leila Wiberg</title>
   <link rel="icon" type="image/webp" href="../../tinac_favicon.webp">
-  <link rel="stylesheet" href="../../style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;500&family=Rock+Salt&display=swap" rel="stylesheet">
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3d59309f-911a-422c-8648-749505aab960"></script>
 </head>
 <body>
-    <div id="header-include"></div>
+  <div id="header-include"></div>
 
-    <canvas id="waveBanner" data-text="2026 SHOWREEL   ↓   " data-concave="0" style="margin-top:-10rem; margin-bottom:-2rem"></canvas>
-
-    <div class="video-container" style="margin-bottom:0">
-    <div class="custom-video-wrapper">
-        <video id="mainVideo" poster="/projects/showreel/Leila-Wiberg-Showreel-2026-thumbnail.webp">
-        <source src="/projects/showreel/Leila-Wiberg-Showreel-2026.mp4" type="video/mp4">
+  <main class="showreel-page">
+    <section class="showreel-entry showreel-entry-current" aria-label="2026 showreel">
+      <div class="custom-video-wrapper showreel-frame">
+        <video poster="/projects/showreel/Leila-Wiberg-Showreel-2026-thumbnail.webp" preload="metadata" playsinline aria-label="Leila Wiberg 2026 showreel">
+          <source src="/projects/showreel/Leila-Wiberg-Showreel-2026.mp4" type="video/mp4">
+          Your browser does not support the video tag.
         </video>
-        <button class="play-btn" id="playBtn" aria-label="Play video"></button>
-    </div>
-    </div>
+        <button class="play-btn showreel-play-btn" type="button" aria-label="Play the 2026 showreel">
+          <span class="showreel-cursor-label">Play 2026 Showreel</span>
+        </button>
+        <span class="showreel-year" aria-hidden="true">2026</span>
+      </div>
+    </section>
 
-    <canvas id="waveBanner2024" data-text="2024 SHOWREEL   ↓   " data-concave="0" style="margin-top:-6rem; margin-bottom:-2rem; pointer-events:none"></canvas>
-
-    <div class="video-container">
-    <div class="custom-video-wrapper">
-        <video id="mainVideo2024" poster="/projects/showreel/leila_showreel_2024-thumbnail.webp">
-        <source src="/projects/showreel/leila_showreel_2024.mp4" type="video/mp4">
+    <section class="showreel-entry showreel-entry-archive" aria-label="2024 showreel">
+      <div class="custom-video-wrapper showreel-frame">
+        <video poster="/projects/showreel/leila_showreel_2024-thumbnail.webp" preload="metadata" playsinline aria-label="Leila Wiberg 2024 showreel">
+          <source src="/projects/showreel/leila_showreel_2024.mp4" type="video/mp4">
+          Your browser does not support the video tag.
         </video>
-        <button class="play-btn" id="playBtn2024" aria-label="Play video"></button>
-    </div>
-    </div>
+        <button class="play-btn showreel-play-btn" type="button" aria-label="Play the 2024 showreel">
+          <span class="showreel-cursor-label">Play 2024 Showreel</span>
+        </button>
+        <span class="showreel-year" aria-hidden="true">2024</span>
+      </div>
+    </section>
+  </main>
 
-    <div id="footer-include"></div>
-    <script src="../../functions.js"></script>
+  <div id="footer-include"></div>
+  <script src="../../functions.js"></script>
 </body>
 </html>

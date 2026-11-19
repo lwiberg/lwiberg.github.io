@@ -6,58 +6,38 @@
   <title>Contact – Leila Wiberg</title>
   <link rel="icon" type="image/png" href="../../tinac_favicon.webp">
   <link rel="stylesheet" href="../../style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;600;900&family=Poppins:wght@400;500&family=Rock+Salt&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3d59309f-911a-422c-8648-749505aab960"></script>
 </head>
 <body>
   <div id="header-include"></div>
 
   <main class="contact-page">
-    <div class="contact-bg" aria-hidden="true">
-      <video class="contact-bg-video" autoplay muted loop playsinline preload="metadata" poster="/projects/contact/firework-bg-thumbnail.webp">
-        <source src="/projects/contact/firework-bg.mp4" type="video/mp4">
-      </video>
-    </div>
-    <section class="contact-card" aria-labelledby="contact-title">
-      <p class="contact-kicker">I'd love to hear from you!</p>
-      <h1 id="contact-title" class="contact-title">dont be shy!</h1>
-      <!-- <p class="contact-intro">
-        I'm currently freelancing and taking on new projects. To inquire, send me a note and I'll get back to you within a day or two.
-      </p> -->
-
-      <div class="contact-cta">
-        <svg class="contact-arrow contact-arrow-left" viewBox="0 0 120 80" aria-hidden="true">
-          <path d="M6 10 C 30 60, 70 70, 108 48" />
-          <path d="M92 40 L 110 48 L 96 62" />
-        </svg>
-        <button type="button" class="contact-copy-btn" data-copy-email="lwiberg29@gmail.com" aria-live="polite">
-          <span class="contact-copy-label">Best way to reach me</span>
-          <span class="contact-copy-email">lwiberg29@gmail.com</span>
-          <span class="contact-copy-hint">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-            Click to copy
-          </span>
-        </button>
-        <svg class="contact-arrow contact-arrow-right" viewBox="0 0 120 80" aria-hidden="true">
-          <path d="M114 10 C 90 60, 50 70, 12 48" />
-          <path d="M28 40 L 10 48 L 24 62" />
-        </svg>
-      </div>
-
-      <div class="contact-links">
-        <a class="contact-link" href="https://www.linkedin.com/in/leila-wiberg/" target="_blank" rel="noopener">
-          <img src="/images/linkedin-icon.webp" alt="" aria-hidden="true">
-          <span>LinkedIn</span>
-        </a>
-        <a class="contact-link" href="https://instagram.com/twerkingisnotacrime" target="_blank" rel="noopener">
-          <img src="/images/instagramicon.webp" alt="" aria-hidden="true">
-          <span>Instagram</span>
-        </a>
-      </div>
+    <section class="contact-banner" aria-labelledby="contact-title">
+      <h1 id="contact-title" class="contact-banner-line contact-banner-line-shy contact-banner-stretch"><span>dont be shy</span></h1>
+      <p class="contact-banner-line contact-banner-line-touch contact-banner-stretch"><span>get in touch</span></p>
+      <a class="contact-banner-line contact-banner-line-email" href="mailto:lwiberg29@gmail.com" data-copy-contact-email="lwiberg29@gmail.com">
+        lwiberg29@gmail.com
+      </a>
     </section>
+
+    <footer class="contact-page-footer">
+      <a class="contact-page-footer-email" href="mailto:lwiberg29@gmail.com" data-copy-contact-email="lwiberg29@gmail.com">lwiberg29@gmail.com</a>
+      <div class="contact-page-socials" aria-label="Social links">
+        <a href="https://instagram.com/twerkingisnotacrime" target="_blank" rel="noopener" aria-label="Instagram">
+          <img src="/images/instagramicon.webp" alt="">
+        </a>
+        <a href="https://github.com/lwiberg" target="_blank" rel="noopener" aria-label="GitHub">
+          <img src="/images/github_icon.webp" alt="">
+        </a>
+        <a href="https://www.linkedin.com/in/leila-wiberg/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <img src="/images/linkedin-icon.webp" alt="">
+        </a>
+      </div>
+    </footer>
+    <p class="contact-copy-message" role="status" aria-live="polite" data-contact-copy-message></p>
   </main>
 
-  <div id="footer-include"></div>
   <script src="../../functions.js"></script>
 </body>
 </html>
