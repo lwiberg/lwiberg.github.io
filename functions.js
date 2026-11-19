@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       line.addEventListener('pointermove', event => {
         if (event.pointerType === 'touch' || reducedMotion.matches ||
-            line.classList.contains('is-entrance-wave') ||
+            line.classList.contains('is-entrance-fade') ||
             line.classList.contains('is-entrance-flourish')) return;
         const letter = event.target.closest('.homepage-hero-letter');
         if (!letter || !text.contains(letter) || !letter.textContent.trim()) {
@@ -94,7 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
       line.addEventListener('pointerleave', () => {
-        if (!line.classList.contains('is-entrance-wave')) reset();
+        if (!line.classList.contains('is-entrance-fade') &&
+            !line.classList.contains('is-entrance-flourish')) reset();
       });
       reducedMotion.addEventListener('change', reset);
       new ResizeObserver(measure).observe(resizeTarget);
@@ -110,6 +111,11 @@ document.addEventListener("DOMContentLoaded", () => {
       lines.forEach(line => setupStretchLine(line, heroName));
     }
 
+    document.querySelectorAll('.contact-banner-stretch').forEach(line => {
+      line.setAttribute('aria-label', line.textContent.trim());
+      setupStretchLine(line, line, 2.2);
+    });
+
     document.querySelectorAll('.section-marker-title').forEach(sectionTitle => {
       sectionTitle.setAttribute('aria-label', sectionTitle.textContent.trim());
       const resetStretch = setupStretchLine(sectionTitle, sectionTitle, 2.5);
@@ -118,64 +124,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const letters = Array.from(sectionTitle.querySelectorAll('.homepage-hero-letter'));
         const flourishLetter = letters.find(letter => letter.textContent.trim());
         if (flourishLetter) flourishLetter.classList.add('is-flourish-letter');
-        let visibleCount = 0;
-        const positions = letters.map(letter => letter.textContent.trim() ? visibleCount++ : null);
-        let frame;
-        const startWave = () => {
-          let start;
+        const startEntrance = () => {
           resetStretch();
-          sectionTitle.classList.add('is-entrance-wave');
-          const animate = time => {
-            if (start === undefined) start = time;
-            const progress = Math.min((time - start) / 700, 1);
-            if (progress === 1) {
-              frame = undefined;
-              resetStretch();
-              sectionTitle.classList.remove('is-entrance-wave');
-              if (flourishLetter) {
-                const firstWidth = parseFloat(flourishLetter.style.getPropertyValue('--letter-width'));
-                const total = letters.reduce((sum, letter) =>
-                  sum + parseFloat(letter.style.getPropertyValue('--letter-width')), 0);
-                const remaining = total - firstWidth;
-                sectionTitle.style.setProperty('--flourish-others-wide', (total - firstWidth * 0.55) / remaining);
-                sectionTitle.style.setProperty('--flourish-others-narrow', (total - firstWidth * 1.3) / remaining);
-                sectionTitle.classList.add('is-entrance-flourish');
-              }
-              return;
-            }
-
-            const center = visibleCount - progress * (visibleCount + 1);
-            const strength = Math.min(progress / 0.08, (1 - progress) / 0.08, 1);
-            const widths = letters.map(letter => parseFloat(letter.style.getPropertyValue('--letter-width')));
-            const scales = positions.map(position =>
-              1 - 0.45 * strength + (position === null ? 0 :
-                2 * strength * Math.exp(-0.5 * ((position - center) / 0.85) ** 2)));
-            const total = widths.reduce((sum, width) => sum + width, 0);
-            const stretched = widths.reduce((sum, width, index) => sum + width * scales[index], 0);
-            letters.forEach((letter, index) => {
-              letter.style.setProperty('--letter-scale', scales[index] * total / stretched);
-            });
-            frame = requestAnimationFrame(animate);
-          };
-          frame = requestAnimationFrame(animate);
+          sectionTitle.classList.add('is-entrance-fade');
         };
         const observer = new IntersectionObserver(([entry]) => {
           if (!entry.isIntersecting) return;
-          if (!reducedMotion.matches) startWave();
+          if (!reducedMotion.matches) startEntrance();
           observer.disconnect();
         }, { threshold: 0.1 });
         observer.observe(sectionTitle);
         sectionTitle.addEventListener('animationend', event => {
-          if (event.target === flourishLetter && event.animationName === 'section-marker-flourish-width') {
+          if (event.target === sectionTitle.firstElementChild &&
+              event.animationName === 'section-marker-entrance') {
+            sectionTitle.classList.remove('is-entrance-fade');
+            if (flourishLetter) {
+              const firstWidth = parseFloat(flourishLetter.style.getPropertyValue('--letter-width'));
+              const total = letters.reduce((sum, letter) =>
+                sum + parseFloat(letter.style.getPropertyValue('--letter-width')), 0);
+              const remaining = total - firstWidth;
+              sectionTitle.style.setProperty('--flourish-others-wide', (total - firstWidth * 0.55) / remaining);
+              sectionTitle.style.setProperty('--flourish-others-narrow', (total - firstWidth * 1.3) / remaining);
+              sectionTitle.classList.add('is-entrance-flourish');
+            }
+          } else if (event.target === flourishLetter &&
+                     event.animationName === 'section-marker-flourish-width') {
             sectionTitle.classList.remove('is-entrance-flourish');
           }
         });
         reducedMotion.addEventListener('change', () => {
           if (!reducedMotion.matches) return;
-          if (frame !== undefined) cancelAnimationFrame(frame);
-          frame = undefined;
           resetStretch();
-          sectionTitle.classList.remove('is-entrance-wave', 'is-entrance-flourish');
+          sectionTitle.classList.remove('is-entrance-fade', 'is-entrance-flourish');
         });
       }
     });
@@ -289,6 +269,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector('.showreel-page')) {
+    document.documentElement.classList.add('has-showreel-scroll-snap');
+    const showreels = [...document.querySelectorAll('.showreel-entry')];
+    let centeringFrame;
+    let lastWheelTime = 0;
+
+    const isReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const settleNearestShowreel = () => {
+      if (isReducedMotion.matches || document.querySelector('.showreel-frame.is-playing')) return;
+
+      const viewportCenter = innerHeight / 2;
+      const nearest = showreels.reduce((best, section) => {
+        const frame = section.querySelector('.showreel-frame');
+        const rect = frame.getBoundingClientRect();
+        const distance = Math.abs(rect.top + rect.height / 2 - viewportCenter);
+        return !best || distance < best.distance ? { section, frame, distance } : best;
+      }, null);
+
+      if (!nearest || nearest.distance > 0.22 * innerHeight) return;
+      const destination = scrollY + nearest.frame.getBoundingClientRect().top -
+        (innerHeight - nearest.frame.offsetHeight) / 2;
+      window.scrollTo({ top: destination, behavior: 'smooth' });
+    };
+
+    window.addEventListener('wheel', () => {
+      lastWheelTime = performance.now();
+      clearTimeout(centeringFrame);
+      centeringFrame = setTimeout(() => {
+        if (performance.now() - lastWheelTime >= 120) settleNearestShowreel();
+      }, 120);
+    }, { passive: true });
+  }
+
   document.querySelectorAll('.custom-video-wrapper').forEach((wrapper) => {
     const video = wrapper.querySelector('video');
     const playBtn = wrapper.querySelector('.play-btn');
@@ -306,9 +319,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     video.addEventListener('play', () => {
+      wrapper.classList.add('is-playing');
       playBtn.style.display = 'none';
       video.controls = true; // Show controls when playing
     });
+
+    if (playBtn.classList.contains('showreel-play-btn')) {
+      playBtn.addEventListener('pointermove', event => {
+        const rect = playBtn.getBoundingClientRect();
+        playBtn.style.setProperty('--showreel-cursor-x', `${event.clientX - rect.left}px`);
+        playBtn.style.setProperty('--showreel-cursor-y', `${event.clientY - rect.top}px`);
+      });
+
+      playBtn.addEventListener('pointerenter', () => {
+        wrapper.classList.add('is-previewing');
+      });
+
+      playBtn.addEventListener('pointerleave', () => {
+        wrapper.classList.remove('is-previewing');
+      });
+    }
   });
 });
 
@@ -637,14 +667,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const showcase = document.querySelector('[data-skill-showcase]');
   if (!showcase) return;
 
+  const skillList = showcase.querySelector('.skill-showcase-list');
   const options = [...showcase.querySelectorAll('[data-skill]')];
   const backgrounds = [...showcase.querySelectorAll('[data-skill-image]')];
   const modelingFrames = [...showcase.querySelectorAll('.skill-showcase-modeling-frame')];
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!skillList || !options.length) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let modelingFrameIndex = 0;
   let modelingTransitionTimer;
   let modelingCleanupTimer;
   let modelingLayer = 1;
+  let autoAdvanceTimer;
+  let isHovered = false;
+  let isFocused = false;
+  let isVisible = !('IntersectionObserver' in window);
 
   const resetModelingSequence = () => {
     modelingFrameIndex = 0;
@@ -665,7 +702,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startModelingSequence = () => {
     stopModelingSequence();
     resetModelingSequence();
-    if (prefersReducedMotion || modelingFrames.length < 2) return;
+    if (reducedMotion.matches || modelingFrames.length < 2) return;
 
     modelingTransitionTimer = setInterval(() => {
       const previousFrame = modelingFrames[modelingFrameIndex];
@@ -715,6 +752,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const updateAutoAdvance = () => {
+    if (!isVisible || document.hidden || isHovered || isFocused || reducedMotion.matches || options.length < 2) {
+      clearInterval(autoAdvanceTimer);
+      autoAdvanceTimer = undefined;
+      return;
+    }
+
+    if (autoAdvanceTimer !== undefined) return;
+    autoAdvanceTimer = setInterval(() => {
+      const currentIndex = options.findIndex((option) => option.classList.contains('is-active'));
+      activateSkill(options[(currentIndex + 1) % options.length].dataset.skill);
+    }, 2500);
+  };
+
+  skillList.addEventListener('pointerenter', (event) => {
+    if (event.pointerType === 'touch') return;
+    isHovered = true;
+    updateAutoAdvance();
+  });
+  skillList.addEventListener('pointerleave', (event) => {
+    if (event.pointerType === 'touch') return;
+    isHovered = false;
+    updateAutoAdvance();
+  });
+  skillList.addEventListener('focusin', () => {
+    isFocused = true;
+    updateAutoAdvance();
+  });
+  skillList.addEventListener('focusout', (event) => {
+    if (skillList.contains(event.relatedTarget)) return;
+    isFocused = false;
+    updateAutoAdvance();
+  });
+
   options.forEach((option) => {
     const activate = () => activateSkill(option.dataset.skill);
     option.addEventListener('pointerenter', activate);
@@ -723,6 +794,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   startModelingSequence();
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      updateAutoAdvance();
+    }, { threshold: 0.1 });
+    observer.observe(showcase);
+  }
+  document.addEventListener('visibilitychange', updateAutoAdvance);
+  reducedMotion.addEventListener('change', () => {
+    if (options.some((option) => option.dataset.skill === '3d-modeling' && option.classList.contains('is-active'))) {
+      if (reducedMotion.matches) {
+        stopModelingSequence();
+        resetModelingSequence();
+      } else {
+        startModelingSequence();
+      }
+    }
+    updateAutoAdvance();
+  });
+  updateAutoAdvance();
 });
 
 // About page FAQ: fill in today's date wherever [data-today] appears.
@@ -732,40 +823,43 @@ document.querySelectorAll('[data-today]').forEach((el) => {
   el.setAttribute('datetime', now.toISOString().slice(0, 10));
 });
 
-// Contact page: copy the email address to the clipboard and flash a confirmation.
-document.addEventListener('click', (event) => {
-  const btn = event.target.closest('[data-copy-email]');
-  if (!btn) return;
-  const email = btn.dataset.copyEmail;
-  const label = btn.querySelector('.contact-copy-label');
-  const original = label ? label.textContent : '';
+document.addEventListener('click', async event => {
+  const target = event.target.closest('[data-copy-contact-email]');
+  if (!target) return;
+  const selection = window.getSelection();
+  if (selection && !selection.isCollapsed && target.contains(selection.anchorNode)) return;
+  event.preventDefault();
 
-  const done = (ok) => {
-    btn.classList.toggle('is-copied', ok);
-    if (label) label.textContent = ok ? 'Copied!' : 'Press Ctrl+C to copy';
-    clearTimeout(btn._copyTimer);
-    btn._copyTimer = setTimeout(() => {
-      btn.classList.remove('is-copied');
-      if (label) label.textContent = original;
-    }, 2000);
-  };
-
-  const legacyCopy = () => {
-    // Fallback: select the text and use execCommand so older/non-secure contexts still work.
-    const range = document.createRange();
-    range.selectNodeContents(btn.querySelector('.contact-copy-email') || btn);
-    const sel = window.getSelection();
-    sel.removeAllRanges(); sel.addRange(range);
-    let ok = false;
-    try { ok = document.execCommand('copy'); } catch (e) {}
-    sel.removeAllRanges();
-    return ok;
-  };
+  const email = target.dataset.copyContactEmail;
+  const message = document.querySelector('[data-contact-copy-message]');
+  let copied = false;
 
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(email).then(() => done(true), () => done(legacyCopy()));
-  } else {
-    done(legacyCopy());
+    try {
+      await navigator.clipboard.writeText(email);
+      copied = true;
+    } catch (error) {
+      console.warn('Unable to copy contact email.', error);
+    }
+  }
+
+  if (!copied) {
+    const input = document.createElement('textarea');
+    input.value = email;
+    input.setAttribute('readonly', '');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.select();
+    copied = document.execCommand('copy');
+    input.remove();
+  }
+
+  if (message) {
+    clearTimeout(message._hideTimer);
+    message.textContent = copied ? 'email copied to clipboard' : 'Unable to copy email';
+    message.classList.add('is-visible');
+    message._hideTimer = setTimeout(() => message.classList.remove('is-visible'), 2400);
   }
 });
 
