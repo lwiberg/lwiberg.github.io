@@ -627,6 +627,81 @@ document.addEventListener("DOMContentLoaded", () => {
   videos.forEach((video) => observer.observe(video));
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  const background = document.querySelector('.homepage-background');
+  const video = background?.querySelector('.homepage-background-video');
+  const toggle = background?.querySelector('.homepage-background-toggle');
+  if (!video || !toggle) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const desktop = window.matchMedia('(min-width: 1200px)');
+  const mobile = window.matchMedia('(max-width: 700px)');
+  let visible = !('IntersectionObserver' in window);
+  let userPaused = false;
+
+  const updatePlayback = () => {
+    video.poster = mobile.matches
+      ? '/images/homepage-background-mobile-poster.webp'
+      : '/images/homepage-background-render-poster.webp';
+    toggle.hidden = reducedMotion.matches;
+    video.hidden = reducedMotion.matches;
+
+    if (reducedMotion.matches) {
+      video.pause();
+      if (video.hasAttribute('src')) {
+        video.removeAttribute('src');
+        video.load();
+      }
+      return;
+    }
+
+    const source = mobile.matches
+      ? '/images/homepage-background-mobile.mp4'
+      : desktop.matches
+        ? '/images/homepage-background-render.mp4'
+        : '/images/homepage-background-render-half.mp4';
+    if (video.getAttribute('src') !== source) {
+      video.src = source;
+      video.load();
+    }
+
+    if (!visible || document.hidden || userPaused) {
+      video.pause();
+      return;
+    }
+
+    video.play().catch((error) => {
+      if (error.name !== 'AbortError') {
+        console.warn('Unable to play homepage background video.', error);
+      }
+    });
+  };
+
+  toggle.addEventListener('click', () => {
+    userPaused = !userPaused;
+    toggle.textContent = userPaused ? 'Play background' : 'Pause background';
+    updatePlayback();
+  });
+  video.addEventListener('error', () => {
+    if (!video.error) return;
+    console.warn('Unable to load homepage background video.', video.error);
+    video.hidden = true;
+    toggle.hidden = true;
+  });
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      updatePlayback();
+    }, { rootMargin: '200px 0px' });
+    observer.observe(background);
+  }
+  desktop.addEventListener('change', updatePlayback);
+  mobile.addEventListener('change', updatePlayback);
+  reducedMotion.addEventListener('change', updatePlayback);
+  document.addEventListener('visibilitychange', updatePlayback);
+  updatePlayback();
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.sagrada-lod-comparison').forEach((comparison) => {
     const range = comparison.querySelector('.sagrada-lod-range');

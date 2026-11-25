@@ -646,6 +646,7 @@ video {
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.01em;
+  white-space: nowrap;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -730,6 +731,7 @@ video {
   .skill-showcase-title {
     font-size: clamp(1.5rem, 7vw, 2.3rem);
     line-height: 1.05;
+    white-space: nowrap;
   }
 
   .skill-showcase-subtitle {
@@ -1187,6 +1189,68 @@ canvas[data-text] {
   border-radius: 8px;
 }
 
+.homepage-background {
+  position: relative;
+  isolation: isolate;
+}
+
+.homepage-background::before {
+  content: '';
+  position: absolute;
+  inset: -64px 0 0;
+  z-index: -2;
+  background: #101112 url('/images/homepage-background-render-poster.webp') center top / cover no-repeat;
+  pointer-events: none;
+}
+
+.homepage-background:has(.homepage-background-video:not([hidden]))::before {
+  background-image: none;
+}
+
+@media (max-width: 700px) {
+  .homepage-background::before {
+    background-image: url('/images/homepage-background-mobile-poster.webp');
+  }
+}
+
+.homepage-background::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: clamp(4rem, 12vw, 12rem);
+  background: linear-gradient(to bottom, transparent, #181818);
+  pointer-events: none;
+}
+
+.homepage-background-video {
+  position: absolute;
+  inset: -64px 0 0;
+  z-index: -1;
+  width: 100%;
+  max-width: none;
+  height: calc(100% + 64px);
+  object-fit: cover;
+  object-position: center top;
+  opacity: .5;
+  pointer-events: none;
+}
+
+.homepage-background-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: 0.3rem;
+  background: rgba(16, 17, 18, 0.8);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
 .homepage-hero {
   position: relative;
   display: flex;
@@ -1197,33 +1261,6 @@ canvas[data-text] {
   padding: clamp(2.5rem, 5vw, 4rem) 0;
   box-sizing: border-box;
   isolation: isolate;
-}
-
-.homepage-hero::after {
-  content: '';
-  position: absolute;
-  top: -64px;
-  right: calc((100% - 100vw) / 2);
-  bottom: 0;
-  left: calc((100% - 100vw) / 2);
-  z-index: -1;
-  background: linear-gradient(90deg, rgba(24, 24, 24, 0.72), rgba(24, 24, 24, 0.28) 58%, rgba(24, 24, 24, 0.14));
-  pointer-events: none;
-}
-
-.homepage-hero-background {
-  position: absolute;
-  top: -64px;
-  right: calc((100% - 100vw) / 2);
-  bottom: 0;
-  left: calc((100% - 100vw) / 2);
-  z-index: -2;
-  width: 100vw;
-  max-width: none;
-  height: calc(100% + 64px);
-  object-fit: cover;
-  opacity: 0.8;
-  pointer-events: none;
 }
 
 .homepage-hero-copy {
@@ -1453,10 +1490,6 @@ canvas[data-text] {
     width: calc(100% - 2rem);
     min-height: 0;
     padding: 3rem 0 2rem;
-  }
-
-  .homepage-hero::after {
-    background: linear-gradient(180deg, rgba(24, 24, 24, 0.46), rgba(24, 24, 24, 0.68));
   }
 
   .homepage-hero-copy {
@@ -3242,6 +3275,41 @@ html, body, .nine-item-main, .nine-item-grid {
   margin-top: clamp(2rem, 4vw, 4rem);
 }
 
+.rbm-carousel-wrap {
+  position: relative;
+}
+
+.rbm-process .chinesecars-carousel {
+  padding-bottom: 8%;
+}
+
+.rbm-overlay-layout {
+  position: absolute;
+  inset: 0;
+  align-content: start;
+  pointer-events: none;
+}
+
+.rbm-overlay-layout::after,
+.rbm-overlay-layout .rbm-reference-frame::before,
+.rbm-overlay-layout .rbm-model-frame::before {
+  display: none;
+}
+
+.rbm-model-frame.has-modeled-overlay {
+  overflow: visible;
+}
+
+.rbm-modeled-overlay {
+  position: absolute;
+  z-index: 4;
+  right: 12%;
+  bottom: -22%;
+  width: 62%;
+  height: auto;
+  pointer-events: none;
+}
+
 .rbm-reference-frame::before,
 .rbm-model-frame::before {
   position: absolute;
@@ -3384,6 +3452,10 @@ html, body, .nine-item-main, .nine-item-grid {
 }
 
 @media (max-width: 900px), (orientation: portrait) {
+  .rbm-process .chinesecars-carousel {
+    padding-bottom: 13%;
+  }
+
   .rbm-reference-frame {
     width: min(78%, 38rem);
     justify-self: center;
@@ -3895,7 +3967,7 @@ html, body, .nine-item-main, .nine-item-grid {
   padding: 0 var(--gallery-padding-inline);
   width: 100%;
   box-sizing: border-box;
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 @media (max-width: 600px) {
