@@ -635,10 +635,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = window.matchMedia('(min-width: 1200px)');
+  const mobile = window.matchMedia('(max-width: 700px)');
   let visible = !('IntersectionObserver' in window);
   let userPaused = false;
 
   const updatePlayback = () => {
+    video.poster = mobile.matches
+      ? '/images/homepage-background-mobile-poster.webp'
+      : '/images/homepage-background-render-poster.webp';
     toggle.hidden = reducedMotion.matches;
     video.hidden = reducedMotion.matches;
 
@@ -651,17 +655,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const source = mobile.matches
+      ? '/images/homepage-background-mobile.mp4'
+      : desktop.matches
+        ? '/images/homepage-background-render.mp4'
+        : '/images/homepage-background-render-half.mp4';
+    if (video.getAttribute('src') !== source) {
+      video.src = source;
+      video.load();
+    }
+
     if (!visible || document.hidden || userPaused) {
       video.pause();
       return;
     }
 
-    const source = desktop.matches
-      ? '/images/homepage-background.mp4'
-      : '/images/homepage-background-half.mp4';
-    if (video.getAttribute('src') !== source) {
-      video.src = source;
-    }
     video.play().catch((error) => {
       if (error.name !== 'AbortError') {
         console.warn('Unable to play homepage background video.', error);
@@ -688,6 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(background);
   }
   desktop.addEventListener('change', updatePlayback);
+  mobile.addEventListener('change', updatePlayback);
   reducedMotion.addEventListener('change', updatePlayback);
   document.addEventListener('visibilitychange', updatePlayback);
   updatePlayback();

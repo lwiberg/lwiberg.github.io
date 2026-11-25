@@ -1199,7 +1199,27 @@ canvas[data-text] {
   position: absolute;
   inset: -64px 0 0;
   z-index: -2;
-  background: #101112 url('/images/homepage-background-poster.webp') center top / cover no-repeat;
+  background: #101112 url('/images/homepage-background-render-poster.webp') center top / cover no-repeat;
+  pointer-events: none;
+}
+
+.homepage-background:has(.homepage-background-video:not([hidden]))::before {
+  background-image: none;
+}
+
+@media (max-width: 700px) {
+  .homepage-background::before {
+    background-image: url('/images/homepage-background-mobile-poster.webp');
+  }
+}
+
+.homepage-background::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: clamp(4rem, 12vw, 12rem);
+  background: linear-gradient(to bottom, transparent, #181818);
   pointer-events: none;
 }
 
@@ -1212,6 +1232,7 @@ canvas[data-text] {
   height: calc(100% + 64px);
   object-fit: cover;
   object-position: center top;
+  opacity: .5;
   pointer-events: none;
 }
 
@@ -3254,6 +3275,41 @@ html, body, .nine-item-main, .nine-item-grid {
   margin-top: clamp(2rem, 4vw, 4rem);
 }
 
+.rbm-carousel-wrap {
+  position: relative;
+}
+
+.rbm-process .chinesecars-carousel {
+  padding-bottom: 8%;
+}
+
+.rbm-overlay-layout {
+  position: absolute;
+  inset: 0;
+  align-content: start;
+  pointer-events: none;
+}
+
+.rbm-overlay-layout::after,
+.rbm-overlay-layout .rbm-reference-frame::before,
+.rbm-overlay-layout .rbm-model-frame::before {
+  display: none;
+}
+
+.rbm-model-frame.has-modeled-overlay {
+  overflow: visible;
+}
+
+.rbm-modeled-overlay {
+  position: absolute;
+  z-index: 4;
+  right: 12%;
+  bottom: -22%;
+  width: 62%;
+  height: auto;
+  pointer-events: none;
+}
+
 .rbm-reference-frame::before,
 .rbm-model-frame::before {
   position: absolute;
@@ -3396,6 +3452,10 @@ html, body, .nine-item-main, .nine-item-grid {
 }
 
 @media (max-width: 900px), (orientation: portrait) {
+  .rbm-process .chinesecars-carousel {
+    padding-bottom: 13%;
+  }
+
   .rbm-reference-frame {
     width: min(78%, 38rem);
     justify-self: center;
@@ -3907,7 +3967,7 @@ html, body, .nine-item-main, .nine-item-grid {
   padding: 0 var(--gallery-padding-inline);
   width: 100%;
   box-sizing: border-box;
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 @media (max-width: 600px) {

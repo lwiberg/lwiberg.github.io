@@ -1,7 +1,7 @@
 # lwiberg.github.io
 
-The personal portfolio website for Leila Wiberg aka Tina Crime aka Twerking Is Not A Crime aka TINAC. 
+The personal portfolio website for Leila Wiberg.
 
-Vibe coded with Microsoft CoPilot/ChatGPT.
+Vibe coded with Microsoft CoPilot.
 
-twerkingisnotacrime.com
+View at leilawiberg.com
