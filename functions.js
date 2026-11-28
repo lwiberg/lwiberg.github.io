@@ -322,6 +322,9 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.classList.add('is-playing');
       playBtn.style.display = 'none';
       video.controls = true; // Show controls when playing
+      if (playBtn.classList.contains('showreel-play-btn')) {
+        video.classList.add('show-controls');
+      }
     });
 
     if (playBtn.classList.contains('showreel-play-btn')) {
@@ -747,6 +750,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const backgrounds = [...showcase.querySelectorAll('[data-skill-image]')];
   const modelingFrames = [...showcase.querySelectorAll('.skill-showcase-modeling-frame')];
   if (!skillList || !options.length) return;
+
+  // Safari can't play VP9 WebM alpha, so use the HEVC-with-alpha file there.
+  const isSafari = /^((?!chrome|chromium|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent);
+  if (isSafari) {
+    backgrounds.forEach((background) => {
+      const safariSrc = background.dataset.safariSrc;
+      if (background.tagName !== 'VIDEO' || !safariSrc) return;
+      background.querySelectorAll('source').forEach((source) => source.remove());
+      background.src = safariSrc;
+      background.load();
+    });
+  }
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let modelingFrameIndex = 0;

@@ -2670,6 +2670,14 @@ html, body, .nine-item-main, .nine-item-grid {
   content: "Storyboard";
 }
 
+.nokia-storyboards {
+  position: relative;
+}
+
+.nokia-swipe-overlay {
+  display: none;
+}
+
 .chinesecars-final-frame::before {
   content: "My Render";
 }
@@ -2715,6 +2723,17 @@ html, body, .nine-item-main, .nine-item-grid {
 
   .chinesecars-overview {
     gap: 2.5rem;
+  }
+
+  .nokia-swipe-overlay {
+    position: absolute;
+    right: 0;
+    bottom: calc(clamp(4rem, 8vw, 7rem) - 2.25rem);
+    z-index: 2;
+    display: block;
+    width: min(40%, 11rem);
+    height: auto;
+    pointer-events: none;
   }
 }
 
@@ -3791,6 +3810,10 @@ html, body, .nine-item-main, .nine-item-grid {
   width: 123%;
 }
 
+.nokia-details-overlay.is-modeled-these-mobile {
+  display: none;
+}
+
 .nokia-details-overlay.is-brings-life {
   top: clamp(1rem, 1.8vw, 1.75rem);
   right: 4%;
@@ -3866,6 +3889,18 @@ html, body, .nine-item-main, .nine-item-grid {
 
   .nokia-details-slide > .nokia-details-overlay.is-modeled-these {
     display: none;
+  }
+
+  .nokia-modeled-media {
+    position: relative;
+  }
+
+  .nokia-details-overlay.is-modeled-these-mobile {
+    display: block;
+    top: 66.667%;
+    left: 50%;
+    width: 88%;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -4218,5 +4253,39 @@ html, body, .nine-item-main, .nine-item-grid {
   .showreel-entry {
     margin-bottom: 6rem;
   }
+}
 
+@media (max-width: 700px), (max-height: 500px) and (hover: none) and (pointer: coarse) {
+  .showreel-frame .showreel-play-btn,
+  .showreel-frame.is-previewing .showreel-play-btn,
+  .showreel-frame .showreel-play-btn:focus-visible {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    width: clamp(6.5rem, 27vw, 8.5rem);
+    height: clamp(6.5rem, 27vw, 8.5rem);
+    border: 1px solid rgba(241, 236, 226, 0.9);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .showreel-frame .showreel-play-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .showreel-frame .showreel-cursor-label {
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    border: 0;
+    font-size: clamp(0.7rem, 3vw, 0.95rem);
+    opacity: 1;
+  }
 }
